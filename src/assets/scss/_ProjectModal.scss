@@ -1,0 +1,353 @@
+@use '_variables.scss' as *;
+@use 'sass:color';
+
+.project-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.project-modal {
+  background: $card-bg-light;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  margin: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  // Smooth scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(99, 102, 241, 0.5);
+    }
+  }
+
+  .modal-close {
+    position: sticky;
+    top: 1rem;
+    right: 1rem;
+    margin-left: auto;
+    margin-bottom: -3rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.9);
+      transform: rotate(90deg) scale(1.1);
+    }
+  }
+
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-image-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 20px 20px 0 0;
+
+    .modal-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .modal-featured-badge {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      background: linear-gradient(135deg, $color-accent 0%, $color-primary-light 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    }
+  }
+
+  .modal-info {
+    padding: 2rem;
+
+    .modal-header {
+      margin-bottom: 1.5rem;
+
+      h2 {
+        font-size: 2rem;
+        color: $color-primary;
+        margin: 0 0 1rem 0;
+      }
+
+      .modal-meta {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+
+        .modal-category-badge,
+        .modal-year-badge {
+          padding: 0.4rem 1rem;
+          border-radius: 15px;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
+        .modal-category-badge {
+          background: rgba(99, 102, 241, 0.15);
+          color: $color-primary;
+          border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .modal-year-badge {
+          background: rgba(16, 185, 129, 0.15);
+          color: $color-success-dark;
+          border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+      }
+    }
+
+    .modal-description {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: $text-light;
+      margin-bottom: 2rem;
+    }
+
+    .modal-tech-stack {
+      margin-bottom: 2rem;
+
+      h3 {
+        font-size: 1.3rem;
+        color: $color-primary;
+        margin-bottom: 1rem;
+      }
+
+      .tech-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+
+        .tech-item {
+          background: #e7e7e7;
+          color: $text-light;
+          padding: 0.6rem 1.2rem;
+          border-radius: 12px;
+          font-size: 0.95rem;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          cursor: default;
+
+          &:hover {
+            background: rgba(99, 102, 241, 0.15);
+            color: $color-primary;
+          }
+        }
+      }
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+
+      .modal-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+
+        svg {
+          font-size: 1.2rem;
+        }
+
+        &.github-btn {
+          background: $color-primary;
+          color: white;
+
+          &:hover {
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+          }
+        }
+
+        &.live-btn {
+          background: $color-accent;
+          color: white;
+
+          &:hover {
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark Mode Styles
+body.dark-mode {
+  .project-modal {
+    background: $card-bg-dark;
+
+    .modal-info {
+      .modal-header {
+        h2 {
+          color: color.adjust($color-primary, $lightness: 15%);
+        }
+
+        .modal-meta {
+          .modal-category-badge {
+            background: rgba(99, 102, 241, 0.3);
+            color: color.adjust($color-primary, $lightness: 20%);
+            border-color: rgba(99, 102, 241, 0.4);
+          }
+
+          .modal-year-badge {
+            background: rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.4);
+          }
+        }
+      }
+
+      .modal-description {
+        color: $card-text-muted-dark;
+      }
+
+      .modal-tech-stack {
+        h3 {
+          color: color.adjust($color-primary, $lightness: 15%);
+        }
+
+        .tech-items {
+          .tech-item {
+            background: rgba(255, 255, 255, 0.15);
+            color: $card-text-dark;
+
+            &:hover {
+              background: rgba(99, 102, 241, 0.3);
+              color: color.adjust($color-primary, $lightness: 20%);
+            }
+          }
+        }
+      }
+
+      .modal-actions {
+        .modal-btn {
+          &.github-btn {
+            background: color.adjust($color-primary, $lightness: 10%);
+
+            &:hover {
+              background: color.adjust($color-primary, $lightness: 5%);
+            }
+          }
+
+          &.live-btn {
+            background: $color-accent;
+
+            &:hover {
+              background: color.adjust($color-accent, $lightness: -5%);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .project-modal-backdrop {
+    padding: 0.5rem;
+  }
+
+  .project-modal {
+    max-height: 90vh;
+    border-radius: 15px;
+
+    .modal-close {
+      width: 35px;
+      height: 35px;
+      font-size: 1rem;
+    }
+
+    .modal-image-container {
+      height: 250px;
+      border-radius: 15px 15px 0 0;
+    }
+
+    .modal-info {
+      padding: 1.5rem;
+
+      .modal-header {
+        h2 {
+          font-size: 1.5rem;
+        }
+      }
+
+      .modal-description {
+        font-size: 1rem;
+      }
+
+      .modal-actions {
+        flex-direction: column;
+
+        .modal-btn {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Ensure backdrop covers navbar properly
+body.dark-mode .project-modal-backdrop {
+  background: rgba(0, 0, 0, 0.92);
+}

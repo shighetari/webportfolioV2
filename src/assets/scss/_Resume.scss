@@ -1,6 +1,7 @@
+@use 'sass:color';
 // src/assets/scss/_Resume.scss
-@import "variables";
-@import "DarkModeToggle";
+@use './variables' as *;
+@use './DarkModeToggle';
 
 .resume {
     background: $color-light;
@@ -36,7 +37,7 @@
       text-align: center;
       vertical-align: middle;
       user-select: none;
-      background-color: $primary-color;
+      background-color: $color-primary;
       border: 1px solid transparent;
       border-radius: 0.375rem;
       transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
@@ -47,7 +48,7 @@
       }
 
       &:hover {
-        background-color: darken($primary-color, 10%);
+        background-color: color.adjust($color-primary, $lightness: -10%);
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); // Adding shadow for depth
       }
 
@@ -63,7 +64,7 @@
 
     &:hover {
       color: $text-dark;
-      background-color: lighten($color-light, 50%);
+      background-color: color.adjust($color-light, $lightness: 50%);
     }
   }
 }
@@ -80,10 +81,10 @@ body.dark-mode {
     }
 
     button {
-      background-color: $dark-primary-color;
+      background-color: $color-dark;
 
       &:hover {
-        background-color: lighten($dark-primary-color, 10%);
+        background-color: color.adjust($color-dark, $lightness: 10%);
       }
     }
 
@@ -102,7 +103,7 @@ body.dark-mode {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: $primary-color;
+  background-color: $color-primary;
   color: white;
   padding: 10px 15px;
   border: none;
@@ -118,7 +119,7 @@ body.dark-mode {
   }
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: color.adjust($color-primary, $lightness: -10%);
     transform: translateY(-2px);
   }
 

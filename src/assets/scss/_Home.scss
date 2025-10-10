@@ -1,7 +1,6 @@
 // src/components/_Home.scss
-
-$primary-color: #d8a1e0; // Light mode primary color
-$dark-primary-color: rgb(116, 87, 121); // Dark mode primary color
+@use 'sass:color';
+@use './variables' as *;
 
 .home {
   display: flex;
@@ -10,7 +9,7 @@ $dark-primary-color: rgb(116, 87, 121); // Dark mode primary color
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-  background-color: #f5f5f5; // Light mode background color
+  background-color: $background-light; // Light mode background color
   transition: background-color 0.3s;
 
   .intro-section {
@@ -20,26 +19,67 @@ $dark-primary-color: rgb(116, 87, 121); // Dark mode primary color
     align-items: center;
 
     h1 {
-      font-size: 2.5rem;
-      color: $primary-color;
-      margin-bottom: 1rem;
+      font-size: $font-size-2xl;
+      color: $color-primary;
+      margin-bottom: $spacing-md;
+      line-height: $line-height-tight;
       transition: color 0.3s;
     }
 
     p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      transition: all 0.3s ease; // Smooth transition for text change
-      min-width: 250px; // Set a minimum width
-      display: inline-block; // Make the paragraph inline for center alignment
-      font-family: "Courier New", Courier, monospace; // Optional: Monospace font for typewriter effect
-      width: 300px; // Adjust this based on the longest title
-      text-align: center;
+      font-size: $font-size-lg;
+      margin-bottom: $spacing-xl;
+      line-height: $line-height-base;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2em; // Prevent layout shift during typewriter effect
+      font-family: "Courier New", Courier, monospace;
 
-      // Adjust alignment and spacing if necessary
-      @media (max-width: 768px) {
-        font-size: 1rem;
-        min-width: 200px;
+      @media (max-width: $breakpoint-tablet) {
+        font-size: $font-size-base;
+        min-height: 1.8em;
+      }
+    }
+
+    .availability-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, $color-success 0%, $color-success-dark 100%);
+      color: white;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      animation: pulseGlow 2s infinite;
+
+      .status-icon {
+        font-size: 1.2rem;
+        animation: pulse 2s infinite;
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      }
+      50% {
+        box-shadow: 0 4px 25px rgba(16, 185, 129, 0.5);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.1);
       }
     }
 
@@ -54,27 +94,26 @@ $dark-primary-color: rgb(116, 87, 121); // Dark mode primary color
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0.5rem;
-        // padding: 10px 20px;
-        padding: 0.625rem 1.25rem;
+        margin: $spacing-sm;
+        padding: $spacing-sm $spacing-lg;
         border: none;
-        background-color: $primary-color;
+        background-color: $color-primary;
         color: white;
         text-decoration: none;
         border-radius: 5px;
-        font-size: 1rem;
+        font-size: $font-size-base;
         transition: background-color 0.3s, transform 0.2s;
-        min-width: 150px; // Minimum width for uniformity
+        min-width: 150px;
+        cursor: pointer;
 
         svg {
-          margin-right: 5px;
+          margin-right: $spacing-xs;
           transition: transform 0.2s;
         }
 
         &:hover {
-          background-color: darken($primary-color, 10%);
+          background-color: color.adjust($color-primary, $lightness: -10%);
           transform: translateY(-2px);
-          cursor: pointer;
 
           svg {
             transform: scale(1.1);
@@ -84,8 +123,68 @@ $dark-primary-color: rgb(116, 87, 121); // Dark mode primary color
         &:active {
           transform: translateY(1px);
         }
+
+        &:focus-visible {
+          outline: 2px solid $color-primary;
+          outline-offset: 2px;
+        }
+
+        &.download-resume-btn {
+          background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -15%) 100%);
+          font-weight: 600;
+          box-shadow: 0 4px 12px rgba($color-primary, 0.3);
+
+          &:hover {
+            box-shadow: 0 6px 16px rgba($color-primary, 0.4);
+            background: linear-gradient(135deg, color.adjust($color-primary, $lightness: 5%) 0%, color.adjust($color-primary, $lightness: -10%) 100%);
+          }
+        }
+
+        &.featured-link {
+          background: linear-gradient(135deg, $color-accent 0%, $color-primary-light 100%);
+          box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+          font-weight: 600;
+
+          &:hover {
+            background: linear-gradient(135deg, $color-accent-dark 0%, $color-primary 100%);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+          }
+        }
+
+        &.contact-btn {
+          background: linear-gradient(135deg, $color-accent 0%, $color-accent-dark 100%);
+          box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+          font-weight: 600;
+          position: relative;
+          overflow: visible;
+          animation: contactPulse 3s ease-in-out infinite;
+
+          &:hover {
+            background: linear-gradient(135deg, $color-accent-light 0%, $color-accent 100%);
+            box-shadow: 0 6px 25px rgba(168, 85, 247, 0.6);
+            transform: translateY(-3px);
+
+            svg {
+              transform: scale(1.2) rotate(-10deg);
+            }
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
       }
     }
+  }
+}
+
+// Contact button pulse animation
+@keyframes contactPulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.6), 0 0 25px rgba(168, 85, 247, 0.3);
   }
 }
 
@@ -96,21 +195,38 @@ body.dark-mode {
     border: 1px solid rgba(255, 255, 255, 0.1); // Subtle border for dark mode
   }
   .home {
-    background-color: #121212; // Dark mode background color
+    background-color: $background-dark;
 
     .intro-section {
       h1 {
-        color: $dark-primary-color; // Dark mode primary color
+        color: color.adjust($color-primary, $lightness: 15%);
+      }
+
+      p {
+        color: $text-dark;
       }
 
       .action-buttons {
         button,
         .enter-portfolio-btn {
-          background-color: $dark-primary-color;
-          padding: 0.625rem 1.25rem;
+          background-color: color.adjust($color-primary, $lightness: -15%);
 
           &:hover {
-            background-color: darken($dark-primary-color, 10%);
+            background-color: color.adjust($color-primary, $lightness: -25%);
+          }
+
+          &:focus-visible {
+            outline-color: color.adjust($color-primary, $lightness: 15%);
+          }
+
+          &.contact-btn {
+            background: linear-gradient(135deg, $color-accent-dark 0%, color.adjust($color-accent-dark, $lightness: -10%) 100%);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.5);
+
+            &:hover {
+              background: linear-gradient(135deg, $color-accent 0%, $color-accent-dark 100%);
+              box-shadow: 0 6px 25px rgba(168, 85, 247, 0.7);
+            }
           }
         }
       }
@@ -236,39 +352,39 @@ body.dark-mode {
 
 
 // Responsive design adjustments
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-tablet) {
   .home {
     .intro-section {
       h1 {
-        font-size: 1.8rem; // Smaller font size for smaller screens
+        font-size: $font-size-xl;
       }
 
       p {
-        width: 100%; // Adjust for smaller screens
-        font-size: 1rem;
+        width: 100%;
+        font-size: $font-size-base;
       }
 
       .action-buttons {
-        grid-template-columns: 1fr; // Single column for mobile
+        grid-template-columns: 1fr;
         button,
         .enter-portfolio-btn {
-          font-size: 1rem; // Larger font size for mobile
-          padding: 0.75rem 1.25rem; // Larger padding for touch-friendliness
+          font-size: $font-size-base;
+          padding: $spacing-md $spacing-lg;
+          min-height: 44px; // Touch target minimum size
         }
       }
     }
   }
-  // Adjust modal styles for medium devices
+
   .modal-content {
-    max-width: 90%; // Allow a bit more margin on the sides
-    padding: 4% 5%; // Increase padding for better touch interaction
+    max-width: 90%;
+    padding: $spacing-lg;
   }
 }
 
-@media (max-width: 480px) {
-  // Adjust modal styles for small devices
+@media (max-width: $breakpoint-mobile) {
   .modal-content {
-    max-width: 95%; // Allow modal to take up more width
-    padding: 5% 6%; // Further increase padding for better touch interaction
+    max-width: 95%;
+    padding: $spacing-md;
   }
 }

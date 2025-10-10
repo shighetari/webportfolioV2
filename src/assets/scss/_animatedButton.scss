@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Define variables for colors and sizes for easy maintenance
 $button-lavender: rgba(183, 155, 255, 0.7);
 $button-lavender-light: rgba(183, 155, 255, 0.3);
@@ -26,7 +28,7 @@ $hover-effect-size: 300%;
   overflow: hidden;
   font-size: $button-font-size;
   font-weight: bold;
-  @include box-shadow(0 0 0 0 transparentize($button-lavender, 1)); // Use mixin
+  @include box-shadow(0 0 0 0 color.adjust($button-lavender, $alpha: -1)); // Use mixin
 
   &:before {
     content: '';

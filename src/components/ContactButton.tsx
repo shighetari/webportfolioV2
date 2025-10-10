@@ -1,15 +1,25 @@
 import React from "react";
 import "../assets/scss/_ContactButton.scss";
-import ContactIcon from "/icons/eyecontact.svg"; // Import the SVG icon
+import ContactIcon from "/icons/eyecontact.svg";
 
 interface ContactButtonProps {
-  onClick: () => any;
+  onClick: () => void;
 }
 
 const ContactButton: React.FC<ContactButtonProps> = ({ onClick }) => {
   return (
-    <button className="contactme-button" onClick={onClick}>
-      <img src={ContactIcon} alt="Contact Me" /> {/* Use the SVG icon here */}
+    <button
+      className="contactme-button"
+      onClick={onClick}
+      aria-label="Open contact dialog"
+      title="Get in touch"
+      type="button"
+    >
+      <img
+        src={ContactIcon}
+        alt=""
+        role="presentation"
+      />
     </button>
   );
 };
