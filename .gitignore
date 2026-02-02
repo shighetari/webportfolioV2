@@ -26,8 +26,19 @@ dist-ssr
 *.sw?
 .vercel
 
+
 # AI Artifacts
 .Claude.md
+CLAUDE.md
 .cursorrules
 .gemini/
 .agent/
+REFACTORING_ROADMAP.md
+.chatbot-todos.md
+
+# Dependency Lockfiles (using npm)
+bun.lock
+
+# Environment Variables
+.env*
+!.env.example

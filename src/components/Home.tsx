@@ -24,21 +24,11 @@ const Assistant = React.lazy(() => import("./Assistant"));
 
 const Home = () => {
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
-  // const [isAssistantOpen, setIsAssistantOpen] = useState(false);
-
-  // This function toggles the state of the Assistant component
-  // const toggleAssistant = () => {
-  //   setIsAssistantOpen(!isAssistantOpen);
-  // };
 
   const toggleContactDialog = () => {
     setIsContactDialogOpen(!isContactDialogOpen);
   };
 
-  const toggleSection = (section: any) => {
-    setActiveSection(activeSection !== section ? section : "");
-  };
 
   const [showResumeModal, setShowResumeModal] = useState(false);
   const toggleResumeModal = () => {

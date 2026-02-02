@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useFrame, extend } from "@react-three/fiber";
 import { Mesh, ShaderMaterial, Color } from "three";
 import { Text } from "@react-three/drei";
-import * as THREE from "three";
+
 
 extend({ ShaderMaterial });
 
@@ -78,7 +78,7 @@ const InteractiveButton: React.FC<InteractiveButtonProps> = ({
             {
               uniforms: {
                 time: { value: 0 },
-                hovered: { value: 0 },
+                hovered: { value: hovered ? 1 : 0 },
                 color1: { value: new Color(isPressed ? "#00FF00" : "#FF6347") },
                 color2: { value: new Color("#FFFFFF") },
               },

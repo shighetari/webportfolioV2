@@ -22,7 +22,7 @@ interface ProjectModalProps {
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose }) => {
-  if (!project) return null;
+
 
   // Prevent body scroll when modal is open
   React.useEffect(() => {
@@ -47,7 +47,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
 
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isOpen && project && (
         <motion.div
           className="project-modal-backdrop"
           variants={backdropVariants}
