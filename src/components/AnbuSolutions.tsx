@@ -1,315 +1,124 @@
 // src/components/AnbuSolutions.tsx
-import React from "react";
+import React, { Suspense } from "react";
 import { motion } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment, Float, Sparkles, ContactShadows } from "@react-three/drei";
 import Navigation from "./Navigation";
-import StatCounter from "./StatCounter";
-import CaseStudyAccordion from "./CaseStudyAccordion";
-import { FaRocket, FaBrain, FaCode, FaShieldAlt, FaExternalLinkAlt, FaEnvelope, FaTrophy, FaClock, FaChartLine, FaUsers } from "react-icons/fa";
-import { getTechIcon } from "../utils/techStackIcons";
-import {
-  heroVariants,
-  heroContentVariants,
-  heroItemVariants,
-  achievementGridVariants,
-  serviceGridVariants,
-  serviceCardVariants,
-  techGridVariants,
-  techIconVariants,
-  ctaVariants,
-  buttonHoverVariants
-} from "../utils/anbuAnimations";
+import AnbuMask from "../models/AnbuMask";
+import { FaExternalLinkAlt, FaEnvelope } from "react-icons/fa";
 import "../assets/scss/_AnbuSolutions.scss";
 
 const AnbuSolutions: React.FC = () => {
-  const services = [
-    {
-      icon: <FaBrain />,
-      title: "AI Integration",
-      description: "Plug AI into your existing systems without the headache. We handle LLMs, RAG, and custom models.",
-      features: [
-        "OpenAI, Anthropic, and custom integrations",
-        "RAG systems for knowledge retrieval",
-        "Model fine-tuning",
-        "AI workflow automation"
-      ]
-    },
-    {
-      icon: <FaCode />,
-      title: "SaaS Development",
-      description: "Full-stack SaaS from scratch or feature additions to existing platforms. Secure, scalable, profitable.",
-      features: [
-        "Multi-tenant architecture",
-        "Payment integrations (Stripe)",
-        "Analytics dashboards",
-        "White-label solutions"
-      ]
-    },
-    {
-      icon: <FaRocket />,
-      title: "Fullstack Development",
-      description: "Modern web apps built right. React frontends, solid backends, and databases that don't break.",
-      features: [
-        "React, Next.js, TypeScript",
-        "Node.js, Python, Go",
-        "RESTful and GraphQL APIs",
-        "Database design & optimization"
-      ]
-    },
-    {
-      icon: <FaShieldAlt />,
-      title: "DevOps & Cloud",
-      description: "Deploy faster, break less. CI/CD pipelines, containerization, and cloud infrastructure that scales.",
-      features: [
-        "Docker & Kubernetes",
-        "AWS, GCP, Azure",
-        "Automated CI/CD",
-        "Infrastructure as Code"
-      ]
-    }
-  ];
-
-  const achievements = [
-    { end: 50, suffix: "+", label: "Projects Delivered", icon: <FaTrophy /> },
-    { end: 99.9, suffix: "%", label: "Uptime SLA", icon: <FaChartLine /> },
-    { end: 10, suffix: "K+", label: "Daily AI Requests", icon: <FaRocket /> },
-    { end: 85, suffix: "%", label: "Avg. Time Savings", icon: <FaClock /> }
-  ];
-
-  const caseStudies = [
-    {
-      title: "Enterprise AI Platform",
-      client: "Fortune 500 Company",
-      category: "AI Integration",
-      challenge: "20+ legacy systems needed AI integration without breaking everything.",
-      solution: "Built modular platform with RAG and custom APIs to plug into existing infrastructure.",
-      results: [
-        "6 months → 3 weeks implementation time",
-        "10K+ daily AI requests, 99.9% uptime",
-        "Zero downtime during rollout"
-      ]
-    },
-    {
-      title: "Real-Time Analytics SaaS",
-      client: "FinTech Startup",
-      category: "SaaS Platform",
-      challenge: "Handle 1M+ events/day with sub-200ms queries. Scale without breaking the bank.",
-      solution: "Multi-tenant SaaS with TimescaleDB and serverless architecture.",
-      results: [
-        "1.5M events/day, <150ms response",
-        "10 → 500+ clients in 8 months",
-        "40% infrastructure cost reduction"
-      ]
-    }
-  ];
-
-  // Technology stack with icons
-  const techStack = [
-    "React", "Next.js", "TypeScript", "Node.js", "Python", "Go",
-    "OpenAI", "TensorFlow", "PyTorch", "LangChain",
-    "Docker", "Kubernetes", "AWS", "PostgreSQL", "MongoDB", "Redis",
-    "GraphQL", "FastAPI", "Terraform"
-  ];
-
   return (
     <>
       <Navigation />
       <div className="anbu-solutions page-with-nav">
-
-        {/* Hero Section - Compact & Animated */}
-        <motion.section
-          className="hero-section"
-          variants={heroVariants}
-          initial="hidden"
-          animate="visible"
-        >
+        <main className="anbu-container">
+          {/* Left Content Side */}
           <motion.div
-            className="hero-content"
-            variants={heroContentVariants}
+            className="content-side"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <motion.h1 variants={heroItemVariants}>
-              ANBU Solutions
-            </motion.h1>
-            <motion.p className="tagline" variants={heroItemVariants}>
-              AI-Powered Software That Scales
-            </motion.p>
-            <motion.div className="hero-actions" variants={heroItemVariants}>
-              <motion.a
-                href="https://anbu.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="primary-btn"
-                variants={buttonHoverVariants}
-                initial="rest"
-                whileHover="hover"
-                whileTap="tap"
+            <div className="text-wrapper">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
               >
-                Visit anbu.ai <FaExternalLinkAlt />
-              </motion.a>
-              <motion.a
-                href="mailto:contact@anbu.ai"
-                className="secondary-btn"
-                variants={buttonHoverVariants}
-                initial="rest"
-                whileHover="hover"
-                whileTap="tap"
+                ANBU Solutions
+              </motion.h1>
+
+              <motion.p
+                className="tagline"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
               >
-                <FaEnvelope /> Contact Us
-              </motion.a>
+                Architecting Intelligence.
+              </motion.p>
+
+              <motion.p
+                className="description"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                Bridging the gap between bleeding-edge AI research and production-grade enterprise systems.
+                We build the software that powers the future.
+              </motion.p>
+
+              <motion.div
+                className="cta-group"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <a
+                  href="https://anbu.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="primary-btn"
+                >
+                  Visit ANBU.ai <FaExternalLinkAlt />
+                </a>
+                <a
+                  href="mailto:francisco@anbu.ai"
+                  className="secondary-btn"
+                >
+                  <FaEnvelope /> Contact
+                </a>
+              </motion.div>
+            </div>
+
+            <motion.div
+              className="tech-badges"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <span>Generative AI</span>
+              <span className="separator">•</span>
+              <span>Cloud Architecture</span>
+              <span className="separator">•</span>
+              <span>System Design</span>
             </motion.div>
           </motion.div>
-        </motion.section>
 
-        {/* Achievements - Animated Stats */}
-        <motion.section
-          className="achievements-section"
-          variants={achievementGridVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <div className="achievements-grid">
-            {achievements.map((achievement, index) => (
-              <StatCounter
-                key={index}
-                end={achievement.end}
-                suffix={achievement.suffix}
-                label={achievement.label}
-                icon={achievement.icon}
-                delay={index * 100}
-              />
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Services - KEEPING THIS SECTION */}
-        <section className="services-section">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            What We Do
-          </motion.h2>
-          <motion.p
-            className="section-subtitle"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            The services that keep clients coming back
-          </motion.p>
+          {/* Right Visual Side - The Demo */}
           <motion.div
-            className="services-grid"
-            variants={serviceGridVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            className="visual-side"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
           >
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                className="service-card"
-                variants={serviceCardVariants}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                <div className="service-icon">{service.icon}</div>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-                <ul className="features-list">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx}>{feature}</li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
+            <div className="canvas-wrapper">
+              <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
+                <ambientLight intensity={0.5} />
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
+                <pointLight position={[-10, -10, -10]} intensity={0.5} />
+
+                <Suspense fallback={null}>
+                  <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+                    <AnbuMask scale={[2.8, 2.8, 2.8]} rotation={[0, -0.4, 0]} />
+                  </Float>
+                  <Environment preset="city" />
+                  <Sparkles count={40} scale={8} size={4} speed={0.4} opacity={0.4} color="#a855f7" />
+                  <ContactShadows resolution={1024} scale={10} blur={2.5} opacity={0.5} far={10} color="#000000" />
+                </Suspense>
+
+                <OrbitControls
+                  enableZoom={false}
+                  autoRotate
+                  autoRotateSpeed={0.8}
+                  minPolarAngle={Math.PI / 4}
+                  maxPolarAngle={Math.PI / 1.5}
+                />
+              </Canvas>
+            </div>
           </motion.div>
-        </section>
-
-        {/* Case Studies - Compact Accordions */}
-        <section className="case-studies-section">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            Recent Work
-          </motion.h2>
-          <motion.p
-            className="section-subtitle"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            Real projects, real results
-          </motion.p>
-          <div className="case-studies-grid">
-            {caseStudies.map((study, index) => (
-              <CaseStudyAccordion
-                key={index}
-                title={study.title}
-                client={study.client}
-                category={study.category}
-                challenge={study.challenge}
-                solution={study.solution}
-                results={study.results}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Technology Stack - Icon Grid */}
-        <section className="tech-stack-section">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            Technology Stack
-          </motion.h2>
-          <motion.div
-            className="tech-icon-grid"
-            variants={techGridVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {techStack.map((tech, index) => {
-              const icon = getTechIcon(tech);
-              return icon ? (
-                <motion.div
-                  key={index}
-                  className="tech-icon-item"
-                  variants={techIconVariants}
-                  whileHover="hover"
-                  title={tech}
-                >
-                  {icon}
-                </motion.div>
-              ) : null;
-            })}
-          </motion.div>
-        </section>
-
-        {/* CTA Section - Minimalist */}
-        <motion.section
-          className="cta-section"
-          variants={ctaVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          <h2>Let's Build Something</h2>
-          <motion.a
-            href="mailto:contact@anbu.ai"
-            className="cta-button"
-            variants={buttonHoverVariants}
-            initial="rest"
-            whileHover="hover"
-            whileTap="tap"
-          >
-            <FaEnvelope /> Get in Touch
-          </motion.a>
-        </motion.section>
+        </main>
       </div>
     </>
   );
