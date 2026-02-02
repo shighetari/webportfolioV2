@@ -60,6 +60,8 @@ app.get('/api/projects', async (req, res) => {
     const data = await response.json();
     const results = data.results || [];
 
+
+
     const projects = results.map((page) => {
       const props = page.properties;
 
@@ -79,15 +81,15 @@ app.get('/api/projects', async (req, res) => {
 
       return {
         id: page.id,
-        title: getTitle(props.Name),
+        title: getTitle(props['Project Name']),
         description: getText(props.Description),
-        imageUrl: getImage(page.cover) || props.Image?.files?.[0]?.name || '',
-        techStack: getMultiSelect(props.Tags),
-        githubUrl: getUrl(props.Github),
-        liveUrl: getUrl(props.LiveLink),
+        imageUrl: getImage(page.cover) || '/project-placeholder.png',
+        techStack: getMultiSelect(props['Tech Stack']),
+        githubUrl: getUrl(props['GitHub Repo']),
+        liveUrl: getUrl(props['Live Demo']),
         category: getSelect(props.Category),
         featured: getCheckbox(props.Featured),
-        year: getNumber(props.Year),
+        year: new Date(page.created_time).getFullYear(), // Fallback to created_time year since Year prop is missing
       };
     });
 

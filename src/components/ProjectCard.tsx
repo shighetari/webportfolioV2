@@ -132,7 +132,7 @@ const ProjectCard: React.FC<ProjectProps> = ({ project, onCardClick, index = 0 }
             <span className="year-badge">{project.year}</span>
           </div>
         )}
-        <p>{project.description}</p>
+        <p className="project-description">{project.description}</p>
         <div className="tech-stack">
           {project.techStack.slice(0, 8).map((tech, idx) => (
             <TechIcon key={idx} tech={tech} index={idx} showLabel={true} />

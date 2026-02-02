@@ -305,6 +305,7 @@
         line-height: 1.6;
         color: $text-light;
         margin-bottom: 1rem;
+        white-space: pre-line; /* Handle paragraphs from Notion */
       }
 
       .tech-stack {

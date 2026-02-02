@@ -25,3 +25,9 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# AI Artifacts
+.Claude.md
+.cursorrules
+.gemini/
+.agent/
