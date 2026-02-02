@@ -64,8 +64,8 @@ When visitors ask about Francisco:
 When asked general questions, be helpful, friendly, and concise. Always maintain a professional yet approachable tone.`,
     });
 
-    // Return the AI SDK UI message stream response
-    return result.toDataStreamResponse();
+    // Return the AI SDK UI message stream response (compatible with installed SDK version)
+    return result.toUIMessageStreamResponse();
   } catch (error: any) {
     console.error('Chat API Error:', error);
 
