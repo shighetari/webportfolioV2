@@ -33,11 +33,11 @@ const StudyZone: React.FC = () => {
 
     return (
         <div className={`study-zone ${currentBackground}`}>
-            <div className="music-player"> 
-            <BackgroundMusic />
+            <div className="music-player">
+                <BackgroundMusic />
             </div>
-             {/* <Particles key={particlesKey} id="tsparticles" init={particlesInit} options={particlesConfig} /> */}
-            <Particles id="tsparticles" init={particlesInit} options={particlesConfig} />
+            {/* <Particles key={particlesKey} id="tsparticles" init={particlesInit} options={particlesConfig} /> */}
+            <Particles key={particlesKey} id="tsparticles" init={particlesInit} options={particlesConfig} />
             <button onClick={resetParticles} className="reset-particles-button">Reset Particles</button>
             <div className="background-selector">
                 <button onClick={handleDropdown}>

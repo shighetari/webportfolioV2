@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Environment, Float, Sparkles, ContactShadows } from "@react-three/drei";
 import Navigation from "./Navigation";
-import AnbuMask from "../models/AnbuMask";
+import AnbuMask from "./3d/AnbuMask";
 import { FaExternalLinkAlt, FaEnvelope } from "react-icons/fa";
 import "../assets/scss/_AnbuSolutions.scss";
 

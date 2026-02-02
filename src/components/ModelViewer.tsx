@@ -3,43 +3,43 @@ import "../assets/scss/_components.scss";
 import "../assets/scss/_base.scss";
 import "../assets/scss/_layout.scss";
 /* ~~~~~ */
-import React, { Suspense, useRef, useState, useEffect } from "react";
+import { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF, useAnimations } from "@react-three/drei";
 import { LoopRepeat } from "three";
 import SceneText from "./SceneText";
 import InteractiveButton from "./InteractiveButton";
-import Environment from "../models/Environment";
-import FoxModel from "../models/FoxModel";
+import Environment from "./3d/Environment";
+import FoxModel from "./3d/FoxModel";
 import DialogBox from "./DialogBox";
-import WorldOne from "../models/WorldOne";
-import Bmw1000rr from "../models/Bmw1000rr";
-import SciFiLaptop from "../models/SciFiLaptop";
-import Butterfly from "../models/Butterfly";
+import WorldOne from "./3d/WorldOne";
+import Bmw1000rr from "./3d/Bmw1000rr";
+import SciFiLaptop from "./3d/SciFiLaptop";
+import Butterfly from "./3d/Butterfly";
 import * as THREE from "three";
-import Phoenix from "../models/Phoenix";
+import Phoenix from "./3d/Phoenix";
 // import Zen from './Zen'; //creates weird floating blackspace bug
-import FlyingBook from "../models/FlyingBook";
-import AsianShip from "../models/AsianShip";
+import FlyingBook from "./3d/FlyingBook";
+import AsianShip from "./3d/AsianShip";
 import ITIcons from "./ITIcons";
-import MobyDocker from "../models/MobyDocker";
-import WebDevLaptop from "../models/WebDevLaptop";
-import HelloWorldPython from "../models/HelloWorldPython";
-import KaliLinux from "../models/KaliLinux";
-import Earth from "../models/Earth";
-import HoHo from "../models/HoHo";
-import AnbuMask from "../models/AnbuMask";
+import MobyDocker from "./3d/MobyDocker";
+import WebDevLaptop from "./3d/WebDevLaptop";
+import HelloWorldPython from "./3d/HelloWorldPython";
+import KaliLinux from "./3d/KaliLinux";
+import Earth from "./3d/Earth";
+import HoHo from "./3d/HoHo";
+import AnbuMask from "./3d/AnbuMask";
 import AnimatedButton from "./AnimatedButton";
 import BackgroundMusic from "./BackgroundMusic";
 import ContactButton from "./ContactButton";
-import ArchLinux from "../models/ArchLinux";
-import GNULinux from "../models/GNULinux";
-import HdriAnimeJungle from "../models/HdriAnimeJungle";
-import MechaWep from "../models/mechaWep";
-// import Mew from "../models/Mew";
+import ArchLinux from "./3d/ArchLinux";
+import GNULinux from "./3d/GNULinux";
+import HdriAnimeJungle from "./3d/HdriAnimeJungle";
+import MechaWep from "./3d/mechaWep";
+// import Mew from "./3d/Mew";
 import { ChatBox } from "./ChatBox";
 import { AIDialogBox } from "./AIDialogBox";
-import { Link } from "react-router-dom";
+
 
 function Model() {
   const { scene, animations } = useGLTF(

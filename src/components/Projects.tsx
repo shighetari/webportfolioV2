@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import Navigation from './Navigation';
@@ -7,21 +7,9 @@ import ViewModeToggle, { ViewMode } from './ViewModeToggle';
 import SkeletonCard from './SkeletonCard';
 import { useDebounce } from '../hooks/useDebounce';
 import { containerVariants, fadeInUpVariants, countVariants } from '../utils/animationVariants';
+import { useProjects } from '../hooks/useProjects';
+import { Project } from '../services/projectService';
 import "../assets/scss/_Projects.scss";
-
-// Types
-export interface Project {
-    id: string;
-    title: string;
-    description: string;
-    imageUrl: string;
-    techStack: string[];
-    githubUrl: string;
-    liveUrl: string;
-    category: string;
-    featured: boolean;
-    year: number;
-}
 
 const Projects: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -29,38 +17,13 @@ const Projects: React.FC = () => {
     const [viewMode, setViewMode] = useState<ViewMode>('grid');
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [projectsData, setProjectsData] = useState<Project[]>([]);
-    const [error, setError] = useState<string | null>(null);
+
+    // Use custom hook for data fetching
+    const { projects: projectsData, isLoading, error } = useProjects();
 
     const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
     const categories = ['All', 'AI/ML', 'DevOps', 'Frontend', 'Backend', 'Fullstack'];
-
-    // Fetch projects from API
-    useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                // Determine API URL based on environment
-                const apiBase = import.meta.env.DEV ? 'http://localhost:3001' : '';
-                const response = await fetch(`${apiBase}/api/projects`);
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch projects');
-                }
-
-                const data = await response.json();
-                setProjectsData(data);
-                setIsLoading(false);
-            } catch (err) {
-                console.error('Error fetching projects:', err);
-                setError('Failed to load projects. Please try again later.');
-                setIsLoading(false);
-            }
-        };
-
-        fetchProjects();
-    }, []);
 
     // Memoized filtered and sorted projects
     const sortedProjects = useMemo(() => {

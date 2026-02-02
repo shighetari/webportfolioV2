@@ -1,6 +1,6 @@
 # 🌐 Francisco's portfolio: A React Typescript UI Project
-![Alt text](image.png)
-![Alt text](image-1.png)
+![Alt text](public/images/og-image.png)
+![Alt text](public/images/image-1.png)
 ## About The Project 📜
 Within my portfolio I am utilizing the power of React and TypeScript to showcase professional skills and projects. It features a dynamic 3D environment using `@react-three/fiber`, interactive components, and an AI chatbot powered by OpenAI. Dive into a world where my professional accomplishments are not just listed, but experienced.
 
