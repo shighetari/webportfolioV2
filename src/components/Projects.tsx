@@ -1,56 +1,209 @@
-import React from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import ProjectCard from './ProjectCard';
+import Navigation from './Navigation';
+import ProjectModal from './ProjectModal';
+import ViewModeToggle, { ViewMode } from './ViewModeToggle';
+import SkeletonCard from './SkeletonCard';
+import { useDebounce } from '../hooks/useDebounce';
+import { containerVariants, fadeInUpVariants, countVariants } from '../utils/animationVariants';
 import "../assets/scss/_Projects.scss";
-import DarkModeToggle from './DarkModeToggle';
-import { useNavigate } from 'react-router-dom';
 
-const projectsData = [
-  {
-    id: 1,
-    title: "Conway's Game of Life Simulator",
-    description: "Developed an engaging web-based simulation of Conway’s Game of Life, demonstrating adeptness in algorithmic logic and state management using React and Redux. Engineered a dynamic user interface, optimizing user experience through interactive features such as play/pause functionality, grid clearing, and random seed generation. Implemented a responsive design, ensuring a seamless user interaction across different devices and browsers, while also focusing on intuitive gameplay mechanics.",
-    imageUrl: "projects/pink.JPG", // Replace with actual path
-    techStack: ["React", "Redux"],
-    githubUrl: "https://github.com/shighetari/ConwaysGOL",
-    liveUrl: "https://conways-gol.vercel.app/"
-  },
-  {
-    id: 2,
-    title: "Secret Family Recipes API",
-    description: "Developed a RESTful API for the 'Secret Family Recipes' application, which facilitates efficient culinary data management for a recipe-sharing platform. This API is built with security at the forefront, incorporating JWT for authentication and SQLIte3 for database operations. It ensures data integrity with foreign key constraints and includes middleware like Helmet for HTTP security, alongside bcrypt for data encryption. Please click on the github repository for a detailed README I made for documentation.",
-    imageUrl: "projects/secretfamilyanimeai.png", // Replace with actual path
-    techStack: ["Node", "Express.js", "PostgreSQL", "knex", "Jest", "bcrypt", "nodemon"],
-    githubUrl: "https://github.com/secret-family-recipes-bw/back-end/tree/master?tab=readme-ov-file#-scroll-api-documentation-scroll",
-    liveUrl: "https://secret-family-recipes-2-api.herokuapp.com/"
-  },
-  {
-    id: 3,
-    title: "Ecosoap Backend Developer",
-    description: "Saving, Sanitizing, and Supplying Recycled Soap for the Developing World. My contributions centered on backend development and enhancing API functionalities. I focused on refining server-side logic and optimizing database operations, aligning with the project's core mission of environmental sustainability. My involvement in this socially responsible project was executed within an agile framework, ensuring timely delivery of robust code and active participation in code reviews to uphold the highest software engineering standards.",
-    imageUrl: "projects/ecosoap.avif", // Replace with actual path
-    techStack: ["React", "Redux", "Okta", "Node", "Stripe","Express.js", "PostgreSQL", "knex", "Jest", "bcrypt", "nodemon", "axios", "cloudinary", "heroku", "yup validation", "helmet", "cors", "jsonwebtoken", "pg", "sqlite3", "supertest", "jest", "nodemon", "cross-env", "dotenv", "faker", "jest", "knex", "nodemon", "sqlite3", "supertest", "yup"],
-    githubUrl: "https://github.com/BloomTech-Labs/Labs27-A-Ecosoap-FE",
-    liveUrl: "https://www.youtube.com/watch?v=ST1ois1TUYs"
-  },
-  // Add more projects as needed...
-];
+// Types
+export interface Project {
+    id: string;
+    title: string;
+    description: string;
+    imageUrl: string;
+    techStack: string[];
+    githubUrl: string;
+    liveUrl: string;
+    category: string;
+    featured: boolean;
+    year: number;
+}
 
 const Projects: React.FC = () => {
-    const navigate = useNavigate();
+    const [selectedCategory, setSelectedCategory] = useState<string>('All');
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [viewMode, setViewMode] = useState<ViewMode>('grid');
+    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [projectsData, setProjectsData] = useState<Project[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+    const categories = ['All', 'AI/ML', 'DevOps', 'Frontend', 'Backend', 'Fullstack'];
+
+    // Fetch projects from API
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                // Determine API URL based on environment
+                const apiBase = import.meta.env.DEV ? 'http://localhost:3001' : '';
+                const response = await fetch(`${apiBase}/api/projects`);
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch projects');
+                }
+
+                const data = await response.json();
+                setProjectsData(data);
+                setIsLoading(false);
+            } catch (err) {
+                console.error('Error fetching projects:', err);
+                setError('Failed to load projects. Please try again later.');
+                setIsLoading(false);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+
+    // Memoized filtered and sorted projects
+    const sortedProjects = useMemo(() => {
+        const filtered = projectsData.filter(project => {
+            const matchesCategory = selectedCategory === 'All' || project.category === selectedCategory;
+            const matchesSearch = project.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                project.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                project.techStack.some(tech => tech.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
+            return matchesCategory && matchesSearch;
+        });
+
+        return [...filtered].sort((a, b) => {
+            if (a.featured && !b.featured) return -1;
+            if (!a.featured && b.featured) return 1;
+            return (b.year || 0) - (a.year || 0);
+        });
+    }, [selectedCategory, debouncedSearchTerm, projectsData]);
+
+    const handleCardClick = (project: Project) => {
+        setSelectedProject(project);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setTimeout(() => setSelectedProject(null), 300);
+    };
 
     return (
-        <div className="projects-container">
-            <button className="home-button" onClick={() => navigate('/')}>Home</button>
-            <div className="projects-grid">
-                {projectsData.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
-                ))}
+        <>
+            <Navigation />
+            <div className="projects-container page-with-nav">
+                <motion.div
+                    className="projects-header"
+                    variants={fadeInUpVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    <h1>Projects</h1>
+                    <p className="projects-subtitle">
+                        {projectsData.length > 0
+                            ? `${projectsData.length} projects across AI/ML, DevOps, fullstack, frontend, and backend development`
+                            : 'Loading projects...'}
+                    </p>
+
+                    <div className="projects-filters">
+                        <motion.input
+                            type="text"
+                            placeholder="Search projects..."
+                            className="search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            whileFocus={{ scale: 1.01 }}
+                        />
+                        <div className="category-filters">
+                            {categories.map(category => (
+                                <motion.button
+                                    key={category}
+                                    className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
+                                    onClick={() => setSelectedCategory(category)}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    {category}
+                                </motion.button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="projects-controls">
+                        <motion.div
+                            className="projects-count"
+                            variants={countVariants}
+                            initial="hidden"
+                            animate="visible"
+                            key={sortedProjects.length}
+                        >
+                            Showing {sortedProjects.length} of {projectsData.length} projects
+                        </motion.div>
+                        <ViewModeToggle currentMode={viewMode} onModeChange={setViewMode} />
+                    </div>
+                </motion.div>
+
+                <AnimatePresence mode="wait">
+                    {isLoading ? (
+                        <motion.div
+                            className={`projects-grid ${viewMode}`}
+                            key="loading"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                        >
+                            {[...Array(6)].map((_, i) => (
+                                <SkeletonCard key={i} />
+                            ))}
+                        </motion.div>
+                    ) : error ? (
+                        <motion.div
+                            className="error-message"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            <p>{error}</p>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            className={`projects-grid ${viewMode}`}
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                            key="projects"
+                        >
+                            {sortedProjects.map((project, index) => (
+                                <ProjectCard
+                                    key={project.id}
+                                    project={project}
+                                    index={index}
+                                    onCardClick={() => handleCardClick(project)}
+                                />
+                            ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {!isLoading && !error && sortedProjects.length === 0 && (
+                    <motion.div
+                        className="no-projects"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                    >
+                        <p>No projects found matching your criteria.</p>
+                    </motion.div>
+                )}
             </div>
-            <div className='dark-mode-button'> 
-                <DarkModeToggle />
-            </div>
-        </div>
-      );
-    };
-    
+
+            <ProjectModal
+                project={selectedProject}
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+            />
+        </>
+    );
+};
+
 export default Projects;

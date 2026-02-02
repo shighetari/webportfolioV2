@@ -24,3 +24,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.vercel
+
+# AI Artifacts
+.Claude.md
+.cursorrules
+.gemini/
+.agent/

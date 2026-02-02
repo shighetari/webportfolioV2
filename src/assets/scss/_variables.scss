@@ -1,15 +1,94 @@
-// SCSS Variables
-$primary-color: #d8a1e0;
-$dark-primary-color: #333;
-$color-primary: #d8a1e0;
-$color-dark: #333;
-$color-light: #FFF;
-$background-dark: #121212;
-$text-dark: #FFF;
+// SCSS Variables - Modern Module System
+// This file uses @forward to make variables available to consuming files
+// Use with: @use 'variables' as *;
 
-// Additional colors for shadows and transitions
-$color-light-shadow: rgba(0, 0, 0, 0.1);
-$color-dark-shadow: rgba(255, 255, 255, 0.1);
+// Strategic Color Palette (Modern UX Best Practices)
+// Primary: Blue - represents trust, professionalism, clarity
+$color-primary: #2563eb !default; // Blue 600 - Light mode primary
+$color-primary-light: #3b82f6 !default; // Blue 500 - Dark mode primary (better visibility)
+$color-primary-dark: #1d4ed8 !default; // Blue 700 - Hover states
 
-// Define colors for dark mode
-$dark-primary-color: #333;
+// Accent: Purple - represents innovation and creativity
+$color-accent: #7c3aed !default; // Purple 600 - Light mode accent
+$color-accent-light: #a78bfa !default; // Purple 400 - Dark mode accent
+$color-accent-dark: #6d28d9 !default; // Purple 700 - Hover states
+
+// Status Colors
+$color-success: #10b981 !default; // Emerald 500 - available, positive
+$color-success-dark: #059669 !default; // Emerald 600
+$color-warning: #f59e0b !default; // Amber 500 - highlights
+$color-error: #ef4444 !default; // Red 500
+
+// Base Colors
+$color-dark: #1f2937 !default; // Gray 800
+$color-light: #ffffff !default;
+$background-dark: #0f172a !default; // Slate 900
+$background-light: #f8fafc !default; // Slate 50
+$text-dark: #f1f5f9 !default; // Slate 100
+$text-light: #334155 !default; // Slate 700
+$text-muted: #64748b !default; // Slate 500
+
+// Dark Mode Specific Colors
+$card-bg-dark: rgba(30, 41, 59, 0.8) !default; // Slate 800 with transparency
+$card-bg-light: rgba(255, 255, 255, 0.95) !default;
+$card-border-dark: rgba(99, 102, 241, 0.2) !default;
+$card-border-light: rgba(0, 0, 0, 0.1) !default;
+$card-text-dark: rgba(255, 255, 255, 0.9) !default;
+$card-text-muted-dark: rgba(255, 255, 255, 0.7) !default;
+
+// Chat-Specific Colors
+// Light mode message bubbles
+$chat-user-bg-light: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !default;
+$chat-assistant-bg-light: #f1f5f9 !default; // Slate 100 - better contrast
+$chat-assistant-text-light: #1e293b !default; // Slate 800 - WCAG AA compliant
+
+// Dark mode message bubbles
+$chat-user-bg-dark: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !default;
+$chat-assistant-bg-dark: #334155 !default; // Slate 700 - better contrast
+$chat-assistant-text-dark: #f1f5f9 !default; // Slate 100 - WCAG AA compliant
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !default;
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !default;
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !default;
+
+// Typography
+$font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !default;
+$font-family-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace !default;
+
+// Typography Scale (Modular Scale: 1.25)
+$font-size-xs: 0.75rem !default;    // 12px
+$font-size-sm: 0.875rem !default;   // 14px
+$font-size-base: 1rem !default;      // 16px
+$font-size-lg: 1.125rem !default;    // 18px
+$font-size-xl: 1.25rem !default;     // 20px
+$font-size-2xl: 1.5rem !default;     // 24px
+$font-size-3xl: 1.875rem !default;   // 30px
+$font-size-4xl: 2.25rem !default;    // 36px
+$font-size-5xl: 3rem !default;       // 48px
+
+// Line Heights
+$line-height-tight: 1.25 !default;
+$line-height-base: 1.6 !default;
+$line-height-relaxed: 1.75 !default;
+
+// Font Weights
+$font-weight-normal: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+$font-weight-black: 900 !default;
+
+// Spacing
+$spacing-xs: 0.25rem !default;
+$spacing-sm: 0.5rem !default;
+$spacing-md: 1rem !default;
+$spacing-lg: 1.5rem !default;
+$spacing-xl: 2rem !default;
+
+// Breakpoints
+$breakpoint-mobile: 480px !default;
+$breakpoint-tablet: 768px !default;
+$breakpoint-desktop: 1024px !default;
+$breakpoint-wide: 1440px !default;

@@ -10,17 +10,18 @@ import {
   FaWindowClose,
   FaRedhat,
   FaCat,
+  FaCheckCircle,
 } from "react-icons/fa"; // Importing icons
-import { FcAssistant } from "react-icons/fc";
-import Resume from "./Resume";
 import DarkModeToggle from "./DarkModeToggle";
+import SEO from "./SEO";
 import "../assets/scss/_Home.scss";
 import "../assets/scss/_Resume.scss";
 import "../assets/scss/_ResumeSelection.scss";
 import useTypewriter from "../hooks/useTypewriter";
-import ContactDialog from "./ContactDialog";
-import { ChatBox } from "./ChatBox";
-import Assistant from "./Assistant";
+
+const Resume = React.lazy(() => import("./Resume"));
+const ContactDialog = React.lazy(() => import("./ContactDialog"));
+const Assistant = React.lazy(() => import("./Assistant"));
 
 const Home = () => {
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
@@ -61,23 +62,37 @@ const Home = () => {
 
   return (
     <div>
+      <SEO />
       <main className="home">
         <DarkModeToggle />
         <section className="intro-section">
           <h1>Welcome to My Web Portfolio</h1>
           <h2>Francisco Barrios</h2>
           <p className="dynamic-title">| {typewriterText} |</p>{" "}
-          <p>
+          <div className="availability-status">
+            <FaCheckCircle className="status-icon" />
+            <span>Available for Hire - Open to New Opportunities</span>
+          </div>
+          <p className="multi-hats">
             one man, many hats <FaRedhat />
           </p>
           <div className="action-buttons">
+            <a
+              href="/resume1.pdf"
+              download="Francisco_Barrios_Resume.pdf"
+              className="enter-portfolio-btn download-resume-btn"
+            >
+              <FaBook /> Download Resume
+            </a>
             <button onClick={toggleResumeModal}>
-              <FaBook /> View My Resume
+              <FaBook /> View Resume
             </button>
             {showResumeModal && (
               <div className="modal-overlay">
                 <div className="modal-content">
-                  <Resume />
+                  <React.Suspense fallback={<div className="modal-loading">Loading resume…</div>}>
+                    <Resume />
+                  </React.Suspense>
                   <button className="close-modal" onClick={toggleResumeModal}>
                     <FaWindowClose /> <> Close </>
                   </button>
@@ -85,31 +100,36 @@ const Home = () => {
               </div>
             )}
 
-            {/* <button onClick={() => toggleSection("skills")}>
-            <FaCat /> Study Zonenb 
-
-          </button> */}
-            <Link to="/study" className="enter-portfolio-btn">
-              <FaCat /> Study Zone  
-            </Link>
-      <Link to="/aboutme" className="enter-portfolio-btn">
-              <FaUser /> About me
+            <Link to="/aboutme" className="enter-portfolio-btn">
+              <FaUser /> About Me
             </Link>
             <Link to="/projects" className="enter-portfolio-btn">
-            <FaProjectDiagram /> Projects
+              <FaProjectDiagram /> Projects
             </Link>
-            <button onClick={toggleContactDialog}>
-              <FaEnvelope /> Contact me
+            <Link to="/anbu" className="enter-portfolio-btn featured-link">
+              <FaLightbulb /> ANBU Solutions
+            </Link>
+            <Link to="/study" className="enter-portfolio-btn">
+              <FaCat /> Study Zone
+            </Link>
+            <button onClick={toggleContactDialog} className="contact-btn">
+              <FaEnvelope /> Contact
             </button>
-            <ContactDialog isOpen={isContactDialogOpen} onClose={toggleContactDialog} />
+            {isContactDialogOpen && (
+              <React.Suspense fallback={null}>
+                <ContactDialog isOpen={isContactDialogOpen} onClose={toggleContactDialog} />
+              </React.Suspense>
+            )}
             <Link to="/portfolio" className="enter-portfolio-btn">
-              Enter 3D Portfolio
+              <FaLightbulb /> 3D Portfolio
             </Link>
           </div>
         </section>
         {/* {activeSection === "skills" && <Assistant />} */}
       </main>
-      <Assistant />
+      <React.Suspense fallback={null}>
+        <Assistant />
+      </React.Suspense>
     </div>
   );
 };

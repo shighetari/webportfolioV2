@@ -1,4 +1,5 @@
-@import 'variables.scss';
+@use 'sass:color';
+@use 'variables.scss' as *;
 
 .resume-selection {
     background: rgba(255, 255, 255, 0.8);
@@ -16,12 +17,12 @@
 
   // Glow effect on hover
   &:hover {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 50px rgba($primary-color, 0.5);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 50px rgba($color-primary, 0.5);
     transform: translateY(-5px);
   }
 
   h3 {
-    color: $primary-color;
+    color: $color-primary;
     font-size: 2rem; // Larger font size for better readability
     margin-bottom: 30px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Text shadow for depth
@@ -37,7 +38,7 @@
     height: 80vh; // Use viewport height to control the container size
     overflow-y: auto; // Allow vertical scrolling
     scrollbar-width: thin; // Slim scrollbar for non-webkit browsers
-    scrollbar-color: $primary-color rgba(0, 0, 0, 0.1); // Custom scrollbar colors
+    scrollbar-color: $color-primary rgba(0, 0, 0, 0.1); // Custom scrollbar colors
     padding-right: 10px; // Add padding to prevent the scrollbar from overlapping content
     max-height: 60vh; // - adjust this value
     scroll-behavior: smooth;
@@ -49,13 +50,13 @@
       background: rgba(0, 0, 0, 0.1);
     }
     ::-webkit-scrollbar-thumb {
-      background-color: $primary-color;
+      background-color: $color-primary;
       border-radius: 10px;
     }
   }
 
   .resume-option {
-    background-color: lighten($primary-color, 40%);
+    background-color: color.adjust($color-primary, $lightness: 40%);
     padding: 15px;
     border-radius: 5px;
     display: flex;
@@ -80,19 +81,19 @@
 
     // On hover, add a glow effect around the thumbnails
     &:hover {
-      background-color: lighten($primary-color, 50%);
-      box-shadow: 0 0 20px rgba($primary-color, 0.5);
+      background-color: color.adjust($color-primary, $lightness: 50%);
+      box-shadow: 0 0 20px rgba($color-primary, 0.5);
       z-index: 10; // Ensure the hovered item is above others
     }
     
     h4 {
       margin: 10px 0;
-      color: darken($primary-color, 20%);
+      color: color.adjust($color-primary, $lightness: -20%);
     }
   
     button {
       width: 100%;
-      background-color: $primary-color;
+      background-color: $color-primary;
       color: white;
       padding: 10px 15px;
       border: none;
@@ -103,7 +104,7 @@
       transition: background-color 0.3s;
   
       &:hover {
-        background-color: darken($primary-color, 10%);
+        background-color: color.adjust($color-primary, $lightness: -10%);
       }
     }
     
@@ -147,19 +148,19 @@
 // Dark mode styles
 body.dark-mode {
   .resume-selection {
-    background: $dark-primary-color;
+    background: $color-dark;
     color: white;
-  
+
     .resume-option {
-      background-color: darken($dark-primary-color, 5%);
+      background-color: color.adjust($color-dark, $lightness: -5%);
       h4 {
         color: white;
       }
-  
+
       button {
-        background-color: lighten($dark-primary-color, 10%);
+        background-color: color.adjust($color-dark, $lightness: 10%);
         &:hover {
-          background-color: lighten($dark-primary-color, 5%);
+          background-color: color.adjust($color-dark, $lightness: 5%);
         }
       }
     }

@@ -7,6 +7,8 @@ import StudyZone from "./components/StudyZone";
 import AboutMe from "./components/AboutMe";
 import Projects from "./components/Projects";
 import ModelViewer from "./components/ModelViewer";
+import AnbuSolutions from "./components/AnbuSolutions";
+import "./assets/scss/_base.scss";
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
           <Route path="/study" element={<StudyZone />} />
           <Route path="/aboutme" element={<AboutMe />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/anbu" element={<AnbuSolutions />} />
         </Routes>
       </Suspense>
     </DarkModeProvider>

@@ -18,6 +18,32 @@
 //     }
 // }
 
+@use './variables' as *;
+
+/* Global Typography */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-light;
+  background-color: $background-light;
+  font-weight: $font-weight-normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+  color: $text-dark;
+  background-color: $background-dark;
+}
+
 /* Define CSS Variables */
 :root {
   --spacing-small: 5px;

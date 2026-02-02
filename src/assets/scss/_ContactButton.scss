@@ -1,34 +1,134 @@
+@use './variables' as *;
+
+// Contact button variables
+$contact-button-size: 60px;
+$contact-button-size-mobile: 50px;
+$contact-icon-size: 32px;
+$contact-icon-size-mobile: 26px;
+
 .contactme-button {
-    background-color: #d8a1e0; // Example background color
-    border: none;
-    border-radius: 50%; // Circular button
-    cursor: pointer;
-    outline: none;
-    padding: 10px;
-    transition: all 0.3s ease;
-  
-    &:hover {
-      background-color: #d8a1e098; // Darken the button on hover
-      transform: scale(1.1); // Slightly enlarge the button
-    }
-  
-    &:focus {
-      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5); // Focus outline
-    }
-  
-    &:active {
-      background-color: #367c39; // Change color when clicked
-      transform: scale(0.9); // Slightly shrink the button
-    }
-  
+  // Layout
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $contact-button-size;
+  height: $contact-button-size;
+  padding: 12px;
+
+  // Styling
+  background: linear-gradient(135deg, $color-primary 0%, $color-accent 100%);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+
+  // Effects
+  box-shadow:
+    0 4px 12px rgba($color-primary, 0.3),
+    0 0 0 0 rgba($color-primary, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Subtle pulse animation
+  animation: contact-pulse 3s ease-in-out infinite;
+
+  // Position (if needed for fixed positioning)
+  position: relative;
+
+  &:hover {
+    background: linear-gradient(135deg, $color-primary-light 0%, $color-accent-light 100%);
+    transform: scale(1.1);
+    box-shadow:
+      0 8px 20px rgba($color-primary, 0.4),
+      0 0 30px rgba($color-accent, 0.3);
+
     img {
-      width: 50px;
-      height: auto;
-      transition: transform 0.3s ease; // Smooth transition for the icon
-  
-      &:hover {
-        transform: rotate(360deg); // Rotate icon on hover
-      }
+      transform: rotate(360deg);
     }
   }
+
+  &:focus-visible {
+    outline: 3px solid rgba($color-primary-light, 0.6);
+    outline-offset: 3px;
+  }
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow:
+      0 2px 8px rgba($color-primary, 0.3),
+      0 0 15px rgba($color-accent, 0.2);
+  }
+
+  img {
+    width: $contact-icon-size;
+    height: auto;
+    filter: brightness(0) invert(1); // Make icon white
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none; // Ensure clicks go to button
+  }
+
+  // Responsive design
+  @media (max-width: $breakpoint-mobile) {
+    width: $contact-button-size-mobile;
+    height: $contact-button-size-mobile;
+    padding: 10px;
+
+    img {
+      width: $contact-icon-size-mobile;
+    }
+  }
+}
+
+// Pulse animation keyframes
+@keyframes contact-pulse {
+  0%, 100% {
+    box-shadow:
+      0 4px 12px rgba($color-primary, 0.3),
+      0 0 0 0 rgba($color-primary, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 4px 12px rgba($color-primary, 0.3),
+      0 0 0 8px rgba($color-primary, 0);
+  }
+}
+
+// Dark mode styles
+body.dark-mode {
+  .contactme-button {
+    background: linear-gradient(135deg, $color-primary-dark 0%, $color-accent-dark 100%);
+    box-shadow:
+      0 4px 12px rgba($color-accent, 0.4),
+      0 0 0 0 rgba($color-accent, 0.4);
+
+    &:hover {
+      background: linear-gradient(135deg, $color-primary 0%, $color-accent 100%);
+      box-shadow:
+        0 8px 20px rgba($color-accent, 0.5),
+        0 0 30px rgba($color-primary, 0.4);
+    }
+
+    &:focus-visible {
+      outline-color: rgba($color-accent-light, 0.7);
+    }
+
+    &:active {
+      box-shadow:
+        0 2px 8px rgba($color-accent, 0.4),
+        0 0 15px rgba($color-primary, 0.3);
+    }
+  }
+
+  @keyframes contact-pulse {
+    0%, 100% {
+      box-shadow:
+        0 4px 12px rgba($color-accent, 0.4),
+        0 0 0 0 rgba($color-accent, 0.4);
+    }
+    50% {
+      box-shadow:
+        0 4px 12px rgba($color-accent, 0.4),
+        0 0 0 8px rgba($color-accent, 0);
+    }
+  }
+}
   
