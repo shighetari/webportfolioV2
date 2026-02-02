@@ -6,7 +6,7 @@ import '../assets/scss/_ProjectModal.scss';
 
 interface ProjectModalProps {
   project: {
-    id: number;
+    id: string | number;
     title: string;
     description: string;
     imageUrl: string;

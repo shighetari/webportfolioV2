@@ -7,7 +7,7 @@ import TechIcon from './TechIcon';
 
 interface ProjectProps {
   project: {
-    id: number;
+    id: string | number;
     title: string;
     description: string;
     imageUrl: string;

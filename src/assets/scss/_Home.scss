@@ -43,6 +43,57 @@
       }
     }
 
+    .multi-hats {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: $spacing-lg;
+      font-family: "Poppins", "Segoe UI", sans-serif;
+      font-size: clamp(1.1rem, 1.4vw + 0.9rem, 1.6rem);
+      font-weight: 500;
+      font-style: italic;
+      letter-spacing: 0.08em;
+      color: $color-primary;
+      padding: 0.4rem 0.8rem;
+      text-transform: none;
+      overflow: visible;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0.15rem;
+        width: 100%;
+        height: 0.45rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba($color-accent, 0.22), rgba($color-primary, 0.1));
+        z-index: -1;
+        transition: transform 0.4s ease, opacity 0.4s ease;
+      }
+
+      &:hover::after {
+        transform: translateY(0.1rem) scaleX(1.05);
+        opacity: 1;
+      }
+
+      svg {
+        font-size: 1.8rem;
+        color: color.adjust($color-accent, $lightness: -5%);
+        animation: hatFloat 3.2s ease-in-out infinite;
+      }
+
+      @media (max-width: $breakpoint-tablet) {
+        font-size: clamp(1rem, 0.6vw + 1rem, 1.3rem);
+        letter-spacing: 0.06em;
+      }
+
+      @media (max-width: $breakpoint-mobile) {
+        gap: 0.5rem;
+        padding: 0.35rem 0.6rem;
+      }
+    }
+
     .availability-status {
       display: inline-flex;
       align-items: center;
@@ -80,6 +131,15 @@
       50% {
         opacity: 0.8;
         transform: scale(1.1);
+      }
+    }
+
+    @keyframes hatFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(-6deg);
+      }
+      50% {
+        transform: translateY(-4px) rotate(8deg);
       }
     }
 
@@ -206,6 +266,17 @@ body.dark-mode {
         color: $text-dark;
       }
 
+      .multi-hats {
+        color: color.adjust($color-primary, $lightness: 35%);
+        svg {
+          color: color.adjust($color-accent, $lightness: 35%);
+        }
+
+        &::after {
+          background: linear-gradient(135deg, rgba($color-accent, 0.3), rgba($color-primary, 0.2));
+        }
+      }
+
       .action-buttons {
         button,
         .enter-portfolio-btn {
@@ -311,6 +382,13 @@ body.dark-mode {
   &:focus {
     outline: none; // Remove default focus outline for a cleaner look
   }
+}
+
+.modal-loading {
+  text-align: center;
+  font-size: clamp($font-size-base, 2vw, $font-size-lg);
+  padding: 1.5rem 1rem;
+  color: $text-light;
 }
 // Fade in and scale up the modal smoothly
 @keyframes fadeInModal {

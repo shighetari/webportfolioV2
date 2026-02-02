@@ -32,6 +32,76 @@ To fix this:
 app.use(cors());
 app.use(express.json());
 
+// Projects API endpoint (mimics Vercel serverless function)
+app.get('/api/projects', async (req, res) => {
+  try {
+    if (!process.env.NOTION_TOKEN || !process.env.NOTION_DATABASE_ID) {
+      console.error('❌ Missing Notion configuration');
+      return res.status(500).json({ error: 'Notion configuration missing' });
+    }
+
+    console.log('📚 Fetching projects from Notion...');
+
+    const response = await fetch(`https://api.notion.com/v1/databases/${process.env.NOTION_DATABASE_ID}/query`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.NOTION_TOKEN}`,
+        'Notion-Version': '2022-06-28',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Notion API returned ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    const results = data.results || [];
+
+    const projects = results.map((page) => {
+      const props = page.properties;
+
+      // Helper to safely get property values
+      const getText = (prop) => prop?.rich_text?.[0]?.plain_text || '';
+      const getTitle = (prop) => prop?.title?.[0]?.plain_text || '';
+      const getSelect = (prop) => prop?.select?.name || '';
+      const getMultiSelect = (prop) => prop?.multi_select?.map((item) => item.name) || [];
+      const getNumber = (prop) => prop?.number || 0;
+      const getUrl = (prop) => prop?.url || '';
+      const getCheckbox = (prop) => prop?.checkbox || false;
+      const getImage = (cover) => {
+        if (cover?.type === 'external') return cover.external.url;
+        if (cover?.type === 'file') return cover.file.url;
+        return '';
+      };
+
+      return {
+        id: page.id,
+        title: getTitle(props.Name),
+        description: getText(props.Description),
+        imageUrl: getImage(page.cover) || props.Image?.files?.[0]?.name || '',
+        techStack: getMultiSelect(props.Tags),
+        githubUrl: getUrl(props.Github),
+        liveUrl: getUrl(props.LiveLink),
+        category: getSelect(props.Category),
+        featured: getCheckbox(props.Featured),
+        year: getNumber(props.Year),
+      };
+    });
+
+    console.log(`✅ Successfully fetched ${projects.length} projects`);
+    res.json(projects);
+  } catch (error) {
+    console.error('❌ Projects API Error:', error);
+    res.status(500).json({
+      error: 'Failed to fetch projects',
+      details: error.message
+    });
+  }
+});
+
 // Chat API endpoint (mimics Vercel serverless function)
 app.post('/api/chat', async (req, res) => {
   try {

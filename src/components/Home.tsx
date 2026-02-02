@@ -12,17 +12,16 @@ import {
   FaCat,
   FaCheckCircle,
 } from "react-icons/fa"; // Importing icons
-import { FcAssistant } from "react-icons/fc";
-import Resume from "./Resume";
 import DarkModeToggle from "./DarkModeToggle";
 import SEO from "./SEO";
 import "../assets/scss/_Home.scss";
 import "../assets/scss/_Resume.scss";
 import "../assets/scss/_ResumeSelection.scss";
 import useTypewriter from "../hooks/useTypewriter";
-import ContactDialog from "./ContactDialog";
-import { ChatBox } from "./ChatBox";
-import Assistant from "./Assistant";
+
+const Resume = React.lazy(() => import("./Resume"));
+const ContactDialog = React.lazy(() => import("./ContactDialog"));
+const Assistant = React.lazy(() => import("./Assistant"));
 
 const Home = () => {
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
@@ -74,7 +73,7 @@ const Home = () => {
             <FaCheckCircle className="status-icon" />
             <span>Available for Hire - Open to New Opportunities</span>
           </div>
-          <p>
+          <p className="multi-hats">
             one man, many hats <FaRedhat />
           </p>
           <div className="action-buttons">
@@ -91,7 +90,9 @@ const Home = () => {
             {showResumeModal && (
               <div className="modal-overlay">
                 <div className="modal-content">
-                  <Resume />
+                  <React.Suspense fallback={<div className="modal-loading">Loading resume…</div>}>
+                    <Resume />
+                  </React.Suspense>
                   <button className="close-modal" onClick={toggleResumeModal}>
                     <FaWindowClose /> <> Close </>
                   </button>
@@ -114,7 +115,11 @@ const Home = () => {
             <button onClick={toggleContactDialog} className="contact-btn">
               <FaEnvelope /> Contact
             </button>
-            <ContactDialog isOpen={isContactDialogOpen} onClose={toggleContactDialog} />
+            {isContactDialogOpen && (
+              <React.Suspense fallback={null}>
+                <ContactDialog isOpen={isContactDialogOpen} onClose={toggleContactDialog} />
+              </React.Suspense>
+            )}
             <Link to="/portfolio" className="enter-portfolio-btn">
               <FaLightbulb /> 3D Portfolio
             </Link>
@@ -122,7 +127,9 @@ const Home = () => {
         </section>
         {/* {activeSection === "skills" && <Assistant />} */}
       </main>
-      <Assistant />
+      <React.Suspense fallback={null}>
+        <Assistant />
+      </React.Suspense>
     </div>
   );
 };

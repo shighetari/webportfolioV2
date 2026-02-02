@@ -1,10 +1,100 @@
 // src/components/AboutMe.tsx
-import React, { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useTransform, useInView, useReducedMotion } from "framer-motion";
+import React, { useMemo, useRef, useState } from "react";
+import { motion, useScroll, useReducedMotion } from "framer-motion";
 import Navigation from "./Navigation";
 import profilePic from "/icons/linux-tux-svgrepo-com.svg";
 import "../assets/scss/_AboutMe.scss";
 import { FaGithub, FaLinkedin, FaEnvelope, FaCheckCircle, FaBriefcase, FaCode, FaUsers } from "react-icons/fa";
+
+type SkillInfo = {
+  name: string;
+  level: number;
+  years: number;
+};
+
+const SKILLS_DATA: Record<string, { skills: SkillInfo[] }> = {
+  "AI & ML": {
+    skills: [
+      { name: "OpenAI & Anthropic APIs", level: 95, years: 2 },
+      { name: "LangChain & RAG", level: 90, years: 1.5 },
+      { name: "TensorFlow & PyTorch", level: 85, years: 2 },
+      { name: "Fine-tuning & Prompt Engineering", level: 90, years: 2 }
+    ]
+  },
+  Frontend: {
+    skills: [
+      { name: "React & Next.js", level: 95, years: 5 },
+      { name: "TypeScript", level: 95, years: 4 },
+      { name: "Three.js & WebGL", level: 85, years: 2 },
+      { name: "Redux & State Management", level: 90, years: 4 }
+    ]
+  },
+  Backend: {
+    skills: [
+      { name: "Node.js & Express", level: 95, years: 5 },
+      { name: "Python & FastAPI", level: 90, years: 3 },
+      { name: "PostgreSQL & MongoDB", level: 90, years: 5 },
+      { name: "GraphQL & REST APIs", level: 95, years: 5 }
+    ]
+  },
+  DevOps: {
+    skills: [
+      { name: "Docker & Kubernetes", level: 90, years: 4 },
+      { name: "AWS & Cloud Platforms", level: 85, years: 4 },
+      { name: "CI/CD (GitLab, GitHub Actions)", level: 90, years: 4 },
+      { name: "Terraform & IaC", level: 85, years: 3 }
+    ]
+  },
+  Security: {
+    skills: [
+      { name: "Web Application Security", level: 85, years: 3 },
+      { name: "Penetration Testing", level: 80, years: 2 },
+      { name: "Security Best Practices", level: 90, years: 5 },
+      { name: "Kali Linux & Tools", level: 80, years: 2 }
+    ]
+  }
+};
+
+const SKILLS_CATEGORY_META: Record<
+  string,
+  {
+    headline: string;
+    summary: string;
+    tools: string[];
+    outcome: string;
+  }
+> = {
+  "AI & ML": {
+    headline: "LLM Systems & Retrieval",
+    summary: "Design and deploy AI agents, RAG search, and evaluation loops for production workloads.",
+    tools: ["OpenAI / Groq", "LangChain", "Vector DBs"],
+    outcome: "Ships enterprise-grade assistants in weeks, not months."
+  },
+  Frontend: {
+    headline: "Interfaces with Intent",
+    summary: "Build highly interactive apps with strong UX, accessibility, and motion craft.",
+    tools: ["React / Next.js", "TypeScript", "Framer Motion"],
+    outcome: "Delivers performant experiences across desktop and mobile."
+  },
+  Backend: {
+    headline: "APIs & Data Systems",
+    summary: "Architect resilient services, GraphQL/REST APIs, and data pipelines that scale with demand.",
+    tools: ["Node.js / Python", "PostgreSQL", "MongoDB"],
+    outcome: "Keeps critical paths fast, observable, and secure."
+  },
+  DevOps: {
+    headline: "Platform & Delivery",
+    summary: "Automate infrastructure, observability, and deployments to keep teams shipping confidently.",
+    tools: ["Docker / K8s", "GitHub / GitLab CI", "Terraform"],
+    outcome: "Reduces release friction with reliable pipelines and IaC."
+  },
+  Security: {
+    headline: "Security by Default",
+    summary: "Integrate security reviews, threat modeling, and response plans into the product lifecycle.",
+    tools: ["OWASP Practices", "Pentesting Tooling", "Secure Auth"],
+    outcome: "Builds trust with hardened apps and proactive monitoring."
+  }
+};
 
 const AboutMe = () => {
   const [selectedSkillCategory, setSelectedSkillCategory] = useState<string>("All");
@@ -109,61 +199,56 @@ const AboutMe = () => {
     }
   ];
 
-  const skillsData = {
-    "AI & ML": {
-      skills: [
-        { name: "OpenAI & Anthropic APIs", level: 95, years: 2 },
-        { name: "LangChain & RAG", level: 90, years: 1.5 },
-        { name: "TensorFlow & PyTorch", level: 85, years: 2 },
-        { name: "Fine-tuning & Prompt Engineering", level: 90, years: 2 }
-      ]
-    },
-    "Frontend": {
-      skills: [
-        { name: "React & Next.js", level: 95, years: 5 },
-        { name: "TypeScript", level: 95, years: 4 },
-        { name: "Three.js & WebGL", level: 85, years: 2 },
-        { name: "Redux & State Management", level: 90, years: 4 }
-      ]
-    },
-    "Backend": {
-      skills: [
-        { name: "Node.js & Express", level: 95, years: 5 },
-        { name: "Python & FastAPI", level: 90, years: 3 },
-        { name: "PostgreSQL & MongoDB", level: 90, years: 5 },
-        { name: "GraphQL & REST APIs", level: 95, years: 5 }
-      ]
-    },
-    "DevOps": {
-      skills: [
-        { name: "Docker & Kubernetes", level: 90, years: 4 },
-        { name: "AWS & Cloud Platforms", level: 85, years: 4 },
-        { name: "CI/CD (GitLab, GitHub Actions)", level: 90, years: 4 },
-        { name: "Terraform & IaC", level: 85, years: 3 }
-      ]
-    },
-    "Security": {
-      skills: [
-        { name: "Web Application Security", level: 85, years: 3 },
-        { name: "Penetration Testing", level: 80, years: 2 },
-        { name: "Security Best Practices", level: 90, years: 5 },
-        { name: "Kali Linux & Tools", level: 80, years: 2 }
-      ]
-    }
-  };
+  const skillCategories = useMemo(() => ["All", ...Object.keys(SKILLS_DATA)], []);
 
-  const skillCategories = ["All", ...Object.keys(skillsData)];
+  const categoryCounts = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(SKILLS_DATA).map(([category, data]) => [category, data.skills.length])
+      ),
+    []
+  );
+
+  const totalSkills = useMemo(
+    () => Object.values(categoryCounts).reduce((sum, count) => sum + count, 0),
+    [categoryCounts]
+  );
+
+  const skillSummaries = useMemo(
+    () =>
+      Object.entries(SKILLS_DATA).map(([category, data]) => {
+        const meta = SKILLS_CATEGORY_META[category] ?? {
+          headline: "",
+          summary: "",
+          tools: data.skills.slice(0, 3).map(skill => skill.name),
+          outcome: ""
+        };
+
+        const averageLevel = Math.round(
+          data.skills.reduce((acc, skill) => acc + skill.level, 0) / data.skills.length
+        );
+
+        return {
+          category,
+          averageLevel,
+          ...meta
+        };
+      }),
+    []
+  );
 
   const getFilteredSkills = () => {
     if (selectedSkillCategory === "All") {
-      return Object.entries(skillsData).flatMap(([category, data]) =>
+      return Object.entries(SKILLS_DATA).flatMap(([category, data]) =>
         data.skills.map(skill => ({ ...skill, category }))
       );
     }
-    return skillsData[selectedSkillCategory as keyof typeof skillsData]?.skills.map(skill => ({
+    const categorySkills =
+      SKILLS_DATA[selectedSkillCategory as keyof typeof SKILLS_DATA]?.skills ?? [];
+    return categorySkills.map(skill => ({
       ...skill,
       category: selectedSkillCategory
-    })) || [];
+    }));
   };
 
   return (
@@ -371,6 +456,45 @@ const AboutMe = () => {
           >
             Technical Expertise
           </motion.h2>
+          <motion.p
+            className="skills-lead"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
+          >
+            A snapshot of the capabilities I bring to product teams—from AI platforms to secure delivery.
+          </motion.p>
+          <motion.div
+            className="skills-summary"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            role="list"
+          >
+            {skillSummaries.map(summary => (
+              <motion.article
+                key={summary.category}
+                className="skills-summary-card"
+                variants={fadeInUp}
+                role="listitem"
+              >
+                <header className="summary-header">
+                  <h3>{summary.category}</h3>
+                  <span className="summary-average">{summary.averageLevel}% avg proficiency</span>
+                </header>
+                <p className="summary-headline">{summary.headline}</p>
+                <p className="summary-body">{summary.summary}</p>
+                <ul className="summary-tools" aria-label={`${summary.category} primary tools`}>
+                  {summary.tools.map(tool => (
+                    <li key={tool}>{tool}</li>
+                  ))}
+                </ul>
+                <p className="summary-outcome">{summary.outcome}</p>
+              </motion.article>
+            ))}
+          </motion.div>
           <motion.div
             className="skill-filters"
             variants={staggerContainer}
@@ -391,8 +515,12 @@ const AboutMe = () => {
                 role="tab"
                 aria-selected={selectedSkillCategory === category}
                 aria-controls="skills-panel"
+                aria-label={`${category} skills (${category === "All" ? totalSkills : categoryCounts[category] ?? 0})`}
               >
-                {category}
+                <span className="filter-label">{category}</span>
+                <span className="filter-meta">
+                  {category === "All" ? totalSkills : categoryCounts[category] ?? 0}
+                </span>
               </motion.button>
             ))}
           </motion.div>
