@@ -16,7 +16,6 @@ import DarkModeToggle from "./DarkModeToggle";
 import SEO from "./SEO";
 import "../assets/scss/_Home.scss";
 import "../assets/scss/_Resume.scss";
-import "../assets/scss/_ResumeSelection.scss";
 import useTypewriter from "../hooks/useTypewriter";
 
 const Resume = React.lazy(() => import("./Resume"));

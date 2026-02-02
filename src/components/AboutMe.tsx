@@ -1,103 +1,15 @@
 // src/components/AboutMe.tsx
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useReducedMotion } from "framer-motion";
 import Navigation from "./Navigation";
 import profilePic from "/icons/linux-tux-svgrepo-com.svg";
 import "../assets/scss/_AboutMe.scss";
-import { FaGithub, FaLinkedin, FaEnvelope, FaCheckCircle, FaBriefcase, FaCode, FaUsers } from "react-icons/fa";
+import { FaBriefcase, FaShieldAlt, FaServer, FaBrain } from "react-icons/fa";
 
-type SkillInfo = {
-  name: string;
-  level: number;
-  years: number;
-};
 
-const SKILLS_DATA: Record<string, { skills: SkillInfo[] }> = {
-  "AI & ML": {
-    skills: [
-      { name: "OpenAI & Anthropic APIs", level: 95, years: 2 },
-      { name: "LangChain & RAG", level: 90, years: 1.5 },
-      { name: "TensorFlow & PyTorch", level: 85, years: 2 },
-      { name: "Fine-tuning & Prompt Engineering", level: 90, years: 2 }
-    ]
-  },
-  Frontend: {
-    skills: [
-      { name: "React & Next.js", level: 95, years: 5 },
-      { name: "TypeScript", level: 95, years: 4 },
-      { name: "Three.js & WebGL", level: 85, years: 2 },
-      { name: "Redux & State Management", level: 90, years: 4 }
-    ]
-  },
-  Backend: {
-    skills: [
-      { name: "Node.js & Express", level: 95, years: 5 },
-      { name: "Python & FastAPI", level: 90, years: 3 },
-      { name: "PostgreSQL & MongoDB", level: 90, years: 5 },
-      { name: "GraphQL & REST APIs", level: 95, years: 5 }
-    ]
-  },
-  DevOps: {
-    skills: [
-      { name: "Docker & Kubernetes", level: 90, years: 4 },
-      { name: "AWS & Cloud Platforms", level: 85, years: 4 },
-      { name: "CI/CD (GitLab, GitHub Actions)", level: 90, years: 4 },
-      { name: "Terraform & IaC", level: 85, years: 3 }
-    ]
-  },
-  Security: {
-    skills: [
-      { name: "Web Application Security", level: 85, years: 3 },
-      { name: "Penetration Testing", level: 80, years: 2 },
-      { name: "Security Best Practices", level: 90, years: 5 },
-      { name: "Kali Linux & Tools", level: 80, years: 2 }
-    ]
-  }
-};
-
-const SKILLS_CATEGORY_META: Record<
-  string,
-  {
-    headline: string;
-    summary: string;
-    tools: string[];
-    outcome: string;
-  }
-> = {
-  "AI & ML": {
-    headline: "LLM Systems & Retrieval",
-    summary: "Design and deploy AI agents, RAG search, and evaluation loops for production workloads.",
-    tools: ["OpenAI / Groq", "LangChain", "Vector DBs"],
-    outcome: "Ships enterprise-grade assistants in weeks, not months."
-  },
-  Frontend: {
-    headline: "Interfaces with Intent",
-    summary: "Build highly interactive apps with strong UX, accessibility, and motion craft.",
-    tools: ["React / Next.js", "TypeScript", "Framer Motion"],
-    outcome: "Delivers performant experiences across desktop and mobile."
-  },
-  Backend: {
-    headline: "APIs & Data Systems",
-    summary: "Architect resilient services, GraphQL/REST APIs, and data pipelines that scale with demand.",
-    tools: ["Node.js / Python", "PostgreSQL", "MongoDB"],
-    outcome: "Keeps critical paths fast, observable, and secure."
-  },
-  DevOps: {
-    headline: "Platform & Delivery",
-    summary: "Automate infrastructure, observability, and deployments to keep teams shipping confidently.",
-    tools: ["Docker / K8s", "GitHub / GitLab CI", "Terraform"],
-    outcome: "Reduces release friction with reliable pipelines and IaC."
-  },
-  Security: {
-    headline: "Security by Default",
-    summary: "Integrate security reviews, threat modeling, and response plans into the product lifecycle.",
-    tools: ["OWASP Practices", "Pentesting Tooling", "Secure Auth"],
-    outcome: "Builds trust with hardened apps and proactive monitoring."
-  }
-};
 
 const AboutMe = () => {
-  const [selectedSkillCategory, setSelectedSkillCategory] = useState<string>("All");
+
   const containerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -156,100 +68,78 @@ const AboutMe = () => {
     }
   };
 
-  const achievements = [
-    { icon: <FaBriefcase />, number: "50+", label: "Projects Delivered", color: "#6366f1" },
-    { icon: <FaCode />, number: "5+", label: "Years Experience", color: "#a855f7" },
-    { icon: <FaUsers />, number: "20+", label: "Happy Clients", color: "#10b981" },
-    { icon: <FaCheckCircle />, number: "99.9%", label: "Success Rate", color: "#f59e0b" }
-  ];
+
 
   const timeline = [
     {
-      year: "2024 - Present",
-      title: "Founder & Lead Engineer",
+      year: "2025 - Present",
+      title: "Founder / Software Engineer",
       company: "ANBU Solutions",
-      description: "AI platforms and SaaS products. LLM integrations, RAG systems, and microservices.",
+      description: "Ship client-facing web apps and internal tools in React/TypeScript. Build REST APIs in Node.js and Java/Spring. Use LLM tooling to accelerate work sequences.",
       achievements: [
-        "20+ enterprise clients on ANBU AI platform",
-        "Months → weeks AI implementation time",
-        "99.9% uptime across all services"
+        "Shipped client-facing web apps",
+        "Implemented Auth (JWT/OAuth2)",
+        "Accelerated dev with LLM tooling"
+      ]
+    },
+    {
+      year: "2024 - 2025",
+      title: "Cybersecurity & AI Instructor",
+      company: "Eastwick College",
+      description: "Taught hands-on cybersecurity and AI/LLM fundamentals. Created React/TypeScript classroom demos and led compliance-focused training for staff.",
+      achievements: [
+        "Taught AI/LLM & Cybersecurity",
+        "Created React/TS classroom demos",
+        "Led compliance training for 50+ staff"
       ]
     },
     {
       year: "2023 - 2024",
-      title: "Senior Full Stack Developer",
-      company: "Freelance & Contract",
-      description: "Web apps, AI integrations, and DevOps for various clients.",
+      title: "Assistant DBA",
+      company: "Lexir LLC",
+      description: "Assisted SQL Server migrations to Azure. Validated cutovers with minimal downtime and supported query troubleshooting and performance tuning.",
       achievements: [
-        "15+ production applications shipped",
-        "60% avg. performance improvement",
-        "85% faster deployments via CI/CD"
+        "Assisted migrations to Azure",
+        "Validated cutovers (3-5 min downtime)",
+        "Tuned query performance"
       ]
     },
     {
-      year: "2020 - 2023",
-      title: "Full Stack Developer",
-      company: "Various Companies",
-      description: "Web applications with modern tech stacks. Scalable architecture and solid UX.",
+      year: "2023",
+      title: "Contract Web Developer",
+      company: "Centro Inc",
+      description: "Built and enhanced public website sections. Contributed to a successful $750K government funding outcome by aligning pages to program guidelines.",
       achievements: [
-        "Multiple open-source contributions",
-        "10+ client-facing apps led",
-        "Mentored junior devs"
+        "Contributed to $750K funding outcome",
+        "Cut marketing costs by ~$10K via AI",
+        "Enhanced accessibility & UI"
+      ]
+    },
+    {
+      year: "2021 - 2023",
+      title: "Full-Stack Software Engineer",
+      company: "Xorfox LLC",
+      description: "Built healthcare app features with Angular/TypeScript and Java/Spring Boot. Refactored UI components and integrated Keycloak SSO for regulated workflows.",
+      achievements: [
+        "Built healthcare app features",
+        "Integrated Keycloak SSO",
+        "Streamlined CI/CD (Jenkins + Docker)"
+      ]
+    },
+    {
+      year: "2013 - 2019",
+      title: "Lead Officer, Security Operations",
+      company: "Dell Technologies RSA",
+      description: "Led teams in a high-compliance enterprise environment. Maintained 24/7 coverage, produced audit-ready reports, and enforced access-control procedures.",
+      achievements: [
+        "Led high-compliance security ops",
+        "Maintained 24/7 incident readiness",
+        "Produced audit-ready documentation"
       ]
     }
   ];
 
-  const skillCategories = useMemo(() => ["All", ...Object.keys(SKILLS_DATA)], []);
 
-  const categoryCounts = useMemo(
-    () =>
-      Object.fromEntries(
-        Object.entries(SKILLS_DATA).map(([category, data]) => [category, data.skills.length])
-      ),
-    []
-  );
-
-  const totalSkills = useMemo(
-    () => Object.values(categoryCounts).reduce((sum, count) => sum + count, 0),
-    [categoryCounts]
-  );
-
-  const skillSummaries = useMemo(
-    () =>
-      Object.entries(SKILLS_DATA).map(([category, data]) => {
-        const meta = SKILLS_CATEGORY_META[category] ?? {
-          headline: "",
-          summary: "",
-          tools: data.skills.slice(0, 3).map(skill => skill.name),
-          outcome: ""
-        };
-
-        const averageLevel = Math.round(
-          data.skills.reduce((acc, skill) => acc + skill.level, 0) / data.skills.length
-        );
-
-        return {
-          category,
-          averageLevel,
-          ...meta
-        };
-      }),
-    []
-  );
-
-  const getFilteredSkills = () => {
-    if (selectedSkillCategory === "All") {
-      return Object.entries(SKILLS_DATA).flatMap(([category, data]) =>
-        data.skills.map(skill => ({ ...skill, category }))
-      );
-    }
-    const categorySkills =
-      SKILLS_DATA[selectedSkillCategory as keyof typeof SKILLS_DATA]?.skills ?? [];
-    return categorySkills.map(skill => ({
-      ...skill,
-      category: selectedSkillCategory
-    }));
-  };
 
   return (
     <>
@@ -327,39 +217,132 @@ const AboutMe = () => {
           aria-label="Professional Achievements"
         >
           <motion.div className="achievements-grid" variants={staggerContainer} role="list">
-            {achievements.map((achievement, index) => (
+            <motion.div
+              className="achievement-card"
+              style={{ borderColor: "#a855f7" }}
+              variants={scaleIn}
+              whileHover={shouldReduceMotion ? {} : {
+                scale: 1.05,
+                y: -10,
+                boxShadow: `0 15px 35px #a855f730`,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              role="listitem"
+            >
               <motion.div
-                key={index}
-                className="achievement-card"
-                style={{ borderColor: achievement.color }}
-                variants={scaleIn}
-                whileHover={shouldReduceMotion ? {} : {
-                  scale: 1.05,
-                  y: -10,
-                  boxShadow: `0 15px 35px ${achievement.color}30`,
-                  transition: { type: "spring", stiffness: 300, damping: 20 }
-                }}
-                role="listitem"
+                className="achievement-icon"
+                style={{ color: "#a855f7" }}
+                whileHover={shouldReduceMotion ? {} : { rotate: 360 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
+                aria-hidden="true"
               >
-                <motion.div
-                  className="achievement-icon"
-                  style={{ color: achievement.color }}
-                  whileHover={shouldReduceMotion ? {} : { rotate: 360 }}
-                  transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
-                  aria-hidden="true"
-                >
-                  {achievement.icon}
-                </motion.div>
-                <motion.h3
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
-                >
-                  {achievement.number}
-                </motion.h3>
-                <p>{achievement.label}</p>
+                <FaBriefcase />
               </motion.div>
-            ))}
+              <motion.h3
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
+              >
+                15+
+              </motion.h3>
+              <p>Production Apps</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              style={{ borderColor: "#6366f1" }}
+              variants={scaleIn}
+              whileHover={shouldReduceMotion ? {} : {
+                scale: 1.05,
+                y: -10,
+                boxShadow: `0 15px 35px #6366f130`,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              role="listitem"
+            >
+              <motion.div
+                className="achievement-icon"
+                style={{ color: "#6366f1" }}
+                whileHover={shouldReduceMotion ? {} : { rotate: 360 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
+                aria-hidden="true"
+              >
+                <FaServer />
+              </motion.div>
+              <motion.h3
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
+                style={{ fontSize: "1.5rem" }}
+              >
+                Scalable
+              </motion.h3>
+              <p>Systems</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              style={{ borderColor: "#10b981" }}
+              variants={scaleIn}
+              whileHover={shouldReduceMotion ? {} : {
+                scale: 1.05,
+                y: -10,
+                boxShadow: `0 15px 35px #10b98130`,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              role="listitem"
+            >
+              <motion.div
+                className="achievement-icon"
+                style={{ color: "#10b981" }}
+                whileHover={shouldReduceMotion ? {} : { rotate: 360 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
+                aria-hidden="true"
+              >
+                <FaBrain />
+              </motion.div>
+              <motion.h3
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
+                style={{ fontSize: "1.5rem" }}
+              >
+                AI Powered
+              </motion.h3>
+              <p>Solutions</p>
+            </motion.div>
+
+            <motion.div
+              className="achievement-card"
+              style={{ borderColor: "#f59e0b" }}
+              variants={scaleIn}
+              whileHover={shouldReduceMotion ? {} : {
+                scale: 1.05,
+                y: -10,
+                boxShadow: `0 15px 35px #f59e0b30`,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
+              role="listitem"
+            >
+              <motion.div
+                className="achievement-icon"
+                style={{ color: "#f59e0b" }}
+                whileHover={shouldReduceMotion ? {} : { rotate: 360 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
+                aria-hidden="true"
+              >
+                <FaShieldAlt />
+              </motion.div>
+              <motion.h3
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
+                style={{ fontSize: "1.5rem" }}
+              >
+                Secure
+              </motion.h3>
+              <p>Architecture</p>
+            </motion.div>
           </motion.div>
         </motion.section>
 
@@ -439,136 +422,6 @@ const AboutMe = () => {
           </div>
         </motion.section>
 
-        {/* Technical Skills */}
-        <motion.section
-          className="skills-section"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          aria-labelledby="skills-heading"
-        >
-          <motion.h2
-            id="skills-heading"
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
-          >
-            Technical Expertise
-          </motion.h2>
-          <motion.p
-            className="skills-lead"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
-          >
-            A snapshot of the capabilities I bring to product teams—from AI platforms to secure delivery.
-          </motion.p>
-          <motion.div
-            className="skills-summary"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            role="list"
-          >
-            {skillSummaries.map(summary => (
-              <motion.article
-                key={summary.category}
-                className="skills-summary-card"
-                variants={fadeInUp}
-                role="listitem"
-              >
-                <header className="summary-header">
-                  <h3>{summary.category}</h3>
-                  <span className="summary-average">{summary.averageLevel}% avg proficiency</span>
-                </header>
-                <p className="summary-headline">{summary.headline}</p>
-                <p className="summary-body">{summary.summary}</p>
-                <ul className="summary-tools" aria-label={`${summary.category} primary tools`}>
-                  {summary.tools.map(tool => (
-                    <li key={tool}>{tool}</li>
-                  ))}
-                </ul>
-                <p className="summary-outcome">{summary.outcome}</p>
-              </motion.article>
-            ))}
-          </motion.div>
-          <motion.div
-            className="skill-filters"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            role="tablist"
-            aria-label="Skill category filters"
-          >
-            {skillCategories.map(category => (
-              <motion.button
-                key={category}
-                className={`filter-btn ${selectedSkillCategory === category ? 'active' : ''}`}
-                onClick={() => setSelectedSkillCategory(category)}
-                variants={scaleIn}
-                whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
-                whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-                role="tab"
-                aria-selected={selectedSkillCategory === category}
-                aria-controls="skills-panel"
-                aria-label={`${category} skills (${category === "All" ? totalSkills : categoryCounts[category] ?? 0})`}
-              >
-                <span className="filter-label">{category}</span>
-                <span className="filter-meta">
-                  {category === "All" ? totalSkills : categoryCounts[category] ?? 0}
-                </span>
-              </motion.button>
-            ))}
-          </motion.div>
-          <motion.div
-            id="skills-panel"
-            className="skills-list"
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            key={selectedSkillCategory}
-            role="tabpanel"
-            aria-label={`${selectedSkillCategory} skills`}
-          >
-            {getFilteredSkills().map((skill, index) => (
-              <motion.div
-                key={index}
-                className="skill-item"
-                variants={fadeInUp}
-                whileHover={shouldReduceMotion ? {} : {
-                  y: -5,
-                  boxShadow: "0 8px 25px rgba(99, 102, 241, 0.15)",
-                  transition: { type: "spring", stiffness: 300 }
-                }}
-              >
-                <div className="skill-header">
-                  <span className="skill-name">{skill.name}</span>
-                  <span className="skill-years">{skill.years}+ years</span>
-                </div>
-                <div className="skill-bar-container" role="progressbar" aria-valuenow={skill.level} aria-valuemin={0} aria-valuemax={100} aria-label={`${skill.name} proficiency`}>
-                  <motion.div
-                    className="skill-bar"
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }}
-                    transition={shouldReduceMotion ? { duration: 0 } : {
-                      duration: 1,
-                      delay: index * 0.05,
-                      ease: "easeOut"
-                    }}
-                  >
-                    <span className="skill-level">{skill.level}%</span>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
         {/* Contact Section */}
         <motion.section
           className="contact-section"
@@ -596,64 +449,9 @@ const AboutMe = () => {
           >
             Working on something interesting? Need help with a project? Let's talk.
           </motion.p>
-          <motion.nav
-            className="contact-links"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            aria-label="Contact links"
-          >
-            <motion.a
-              href="https://github.com/shighetari"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-link"
-              variants={scaleIn}
-              whileHover={shouldReduceMotion ? {} : {
-                scale: 1.05,
-                y: -5,
-                boxShadow: "0 10px 25px rgba(99, 102, 241, 0.4)",
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-              aria-label="Visit my GitHub profile"
-            >
-              <FaGithub aria-hidden="true" /> GitHub
-            </motion.a>
-            <motion.a
-              href="https://www.linkedin.com/in/developerbarrios/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-link"
-              variants={scaleIn}
-              whileHover={shouldReduceMotion ? {} : {
-                scale: 1.05,
-                y: -5,
-                boxShadow: "0 10px 25px rgba(99, 102, 241, 0.4)",
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-              aria-label="Connect with me on LinkedIn"
-            >
-              <FaLinkedin aria-hidden="true" /> LinkedIn
-            </motion.a>
-            <motion.a
-              href="mailto:contact@franciscobarrios.dev"
-              className="contact-link"
-              variants={scaleIn}
-              whileHover={shouldReduceMotion ? {} : {
-                scale: 1.05,
-                y: -5,
-                boxShadow: "0 10px 25px rgba(99, 102, 241, 0.4)",
-                transition: { type: "spring", stiffness: 300 }
-              }}
-              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
-              aria-label="Send me an email"
-            >
-              <FaEnvelope aria-hidden="true" /> Email Me
-            </motion.a>
-          </motion.nav>
+          <motion.div className="contact-links" variants={staggerContainer} role="list">
+            {/* Contact links will be rendered here later */}
+          </motion.div>
         </motion.section>
       </main>
     </>
