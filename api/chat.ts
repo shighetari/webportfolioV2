@@ -1,49 +1,45 @@
 import { gateway } from 'ai';
 import { streamText, convertToModelMessages } from 'ai';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Allow CORS for local development
+// Configure for Edge Runtime
 export const config = {
-  api: {
-    bodyParser: true,
-  },
+  runtime: 'edge',
 };
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+export default async function handler(req: Request) {
+  // CORS is handled by vercel.json headers, but we can add them to response if needed.
+  // In Edge runtime, req is a standard Request object.
 
-  // Handle preflight
+  // Handle preflight if not handled by Vercel rewrites/headers
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return new Response(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    });
   }
-
   // Only allow POST requests
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
   }
 
   // Validate API key is present
   if (!process.env.AI_GATEWAY_API_KEY) {
     console.error('❌ Missing AI_GATEWAY_API_KEY environment variable');
-    return res.status(500).json({
+    return new Response(JSON.stringify({
       error: 'Configuration error',
-      message: 'AI Gateway API key is not configured. Please contact the site administrator.'
-    });
+      message: 'AI Gateway API key is not configured.'
+    }), { status: 500 });
   }
 
   try {
-    const { messages } = req.body;
+    const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
-      return res.status(400).json({ error: 'Invalid request: messages array required' });
+      return new Response(JSON.stringify({ error: 'Invalid request: messages array required' }), { status: 400 });
     }
 
     // Create streaming response using AI Gateway
@@ -68,32 +64,14 @@ When visitors ask about Francisco:
 When asked general questions, be helpful, friendly, and concise. Always maintain a professional yet approachable tone.`,
     });
 
-    // Return the AI SDK UI message stream response for useChat compatibility
-    return result.toUIMessageStreamResponse();
+    // Return the AI SDK UI message stream response
+    return result.toDataStreamResponse();
   } catch (error: any) {
     console.error('Chat API Error:', error);
 
-    // Provide more helpful error messages
-    let errorMessage = error?.message || 'Unknown error occurred';
-    let statusCode = 500;
-
-    if (error?.message?.includes('API key') || error?.message?.includes('authentication')) {
-      errorMessage = 'AI Gateway authentication failed. Please check your API key configuration.';
-      statusCode = 401;
-    } else if (error?.message?.includes('network') || error?.message?.includes('ECONNREFUSED')) {
-      errorMessage = 'Unable to connect to AI Gateway. Please check your internet connection.';
-      statusCode = 503;
-    } else if (error?.message?.includes('rate limit') || error?.message?.includes('quota')) {
-      errorMessage = 'AI Gateway rate limit exceeded. Please try again in a moment.';
-      statusCode = 429;
-    } else if (error?.message?.includes('timeout')) {
-      errorMessage = 'Request timed out. Please try again.';
-      statusCode = 504;
-    }
-
-    return res.status(statusCode).json({
+    return new Response(JSON.stringify({
       error: 'Chat API Error',
-      message: errorMessage
-    });
+      message: error?.message || 'Unknown error occurred'
+    }), { status: 500 });
   }
 }
